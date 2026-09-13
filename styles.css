@@ -500,26 +500,29 @@ body {
 
 /* PARCOURS */
 #journey-screen {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    width: 100%;
-    align-items: flex-start;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 40px 20px !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+    box-sizing: border-box !important;
 }
 
 .sidebar {
     background: var(--bg-white);
-    padding: 20px;
+    padding: 20px !important;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    position: sticky;
-    top: 20px;
-    flex-shrink: 0;
-    width: 300px;
-    overflow: visible;
+    position: sticky !important;
+    top: 20px !important;
+    flex-shrink: 0 !important;
+    width: 300px !important;
+    min-width: 300px !important;
+    overflow: visible !important;
+    order: 1 !important;
 }
 
 .sidebar-header {
@@ -707,11 +710,12 @@ body {
 }
 
 .main-content {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    flex: 1;
-    min-width: 0;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 30px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    order: 2 !important;
 }
 
 .step-container {
