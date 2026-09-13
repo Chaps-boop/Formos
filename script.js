@@ -524,11 +524,87 @@ app.extractTopValues = function() {
 };
 
 app.extractPersonality = function() {
-  return this.userScores.personality || 'Équilibré';
+  // Analyser les réponses pour déterminer la personnalité
+  const personalities = {
+    leadership: 0,
+    creativity: 0,
+    analytical: 0,
+    empathy: 0,
+    risk: 0
+  };
+
+  // Compter les réponses par type de module et contenu
+  Object.keys(this.userResponses).forEach(stepIdx => {
+    const step = this.data.steps[stepIdx];
+    const response = this.userResponses[stepIdx];
+
+    if (response.text) {
+      const text = response.text.toLowerCase();
+      // Analyser les mots-clés pour déduire la personnalité
+      if (text.includes('équipe') || text.includes('leader') || text.includes('diriger')) personalities.leadership++;
+      if (text.includes('créativ') || text.includes('nouveau') || text.includes('innov')) personalities.creativity++;
+      if (text.includes('analys') || text.includes('logique') || text.includes('données')) personalities.analytical++;
+      if (text.includes('humain') || text.includes('écoute') || text.includes('compren')) personalities.empathy++;
+      if (text.includes('risque') || text.includes('aventure') || text.includes('défi')) personalities.risk++;
+    }
+  });
+
+  // Déterminer le type de personnalité dominant
+  const sorted = Object.entries(personalities).sort((a, b) => b[1] - a[1]);
+  const topTraits = sorted.filter(([key, val]) => val > 0).slice(0, 2);
+
+  if (topTraits.length === 0) return 'Équilibré et polyvalent';
+
+  const personalityMap = {
+    leadership: 'Leader inspirant et visionnaire',
+    creativity: 'Créatif et innovant',
+    analytical: 'Analytique et méthodique',
+    empathy: 'Empathique et collaboratif',
+    risk: 'Entrepreneurial et aventureux'
+  };
+
+  if (topTraits.length === 1) {
+    return personalityMap[topTraits[0][0]] || 'Équilibré';
+  } else {
+    return personalityMap[topTraits[0][0]] + ' + ' + personalityMap[topTraits[1][0]];
+  }
 };
 
 app.extractLearningStyle = function() {
-  return this.userScores.learning_style || 'Polyvalent';
+  // Analyser les réponses pour déterminer le style d'apprentissage
+  const learningStyles = {
+    visual: 0,
+    auditory: 0,
+    kinesthetic: 0,
+    reading: 0
+  };
+
+  Object.keys(this.userResponses).forEach(stepIdx => {
+    const response = this.userResponses[stepIdx];
+
+    if (response.text) {
+      const text = response.text.toLowerCase();
+      if (text.includes('voir') || text.includes('image') || text.includes('visual')) learningStyles.visual++;
+      if (text.includes('entendre') || text.includes('écoute') || text.includes('parler')) learningStyles.auditory++;
+      if (text.includes('faire') || text.includes('expérien') || text.includes('pratiqu')) learningStyles.kinesthetic++;
+      if (text.includes('lire') || text.includes('écrit') || text.includes('livre')) learningStyles.reading++;
+    }
+  });
+
+  const sorted = Object.entries(learningStyles).sort((a, b) => b[1] - a[1]);
+
+  const styleMap = {
+    visual: 'Visuel - Préfère les schémas et diagrammes',
+    auditory: 'Auditif - Apprend en écoutant et discutant',
+    kinesthetic: 'Kinesthésique - Apprend en faisant',
+    reading: 'Lecture/Écriture - Préfère lire et écrire'
+  };
+
+  if (sorted[0][1] > 0) {
+    return styleMap[sorted[0][0]];
+  }
+
+  return 'Polyvalent - Combine plusieurs styles';
 };
 
 app.extractMotivation = function() {
