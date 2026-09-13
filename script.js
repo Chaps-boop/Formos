@@ -689,39 +689,71 @@ app.selectBestRecommendations = function(profile) {
   const scored = this.data.recommendations.map(job => {
     let score = job.compatibility || 70;
 
-    // Bonus si les valeurs correspondent
+    // Bonus si les valeurs correspondent (poids réduit)
     if (job.values_match && profile.topValues.length > 0) {
       const valueMatches = profile.topValues.filter(v =>
         job.values_match.some(jv => v.toLowerCase().includes(jv.toLowerCase()))
       ).length;
-      score += (valueMatches * 5);
+      score += (valueMatches * 4);
     }
 
-    // Bonus si les compétences correspondent
+    // Bonus si les compétences correspondent (poids réduit)
     if (job.user_skills && profile.topStrengths.length > 0) {
       const skillMatches = profile.topStrengths.filter(s =>
         job.user_skills.some(js => s.toLowerCase().includes(js.toLowerCase()))
       ).length;
-      score += (skillMatches * 3);
+      score += (skillMatches * 2);
     }
 
     // Bonus si le secteur correspond aux réponses
     const responses = Object.values(this.userResponses).map(r => r.text || '').join(' ').toLowerCase();
     if (job.sector && responses.includes(job.sector.toLowerCase())) {
-      score += 10;
+      score += 8;
     }
 
-    // Ajouter un peu de variété (randomiser un peu)
-    score += Math.random() * 5;
+    // Pénalité pour les métiers trop génériques (coaching, consulting, etc.)
+    const genericTerms = ['coaching', 'consultant', 'mentor', 'formateur'];
+    const isGeneric = genericTerms.some(term =>
+      job.title.toLowerCase().includes(term)
+    );
+    if (isGeneric) {
+      score -= 5; // Réduire le score des métiers génériques
+    }
+
+    // Réduire significativement l'aléatoire pour plus de cohérence
+    score += Math.random() * 2;
 
     return { ...job, score };
   });
 
-  // Retourner les 5 meilleurs
-  return scored
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5)
-    .map((job, idx) => ({ ...job, rank_idx: idx }));
+  // Retourner les 5 meilleurs avec une meilleure diversification
+  const sorted = scored.sort((a, b) => b.score - a.score);
+
+  // Assurer la diversité en évitant les doublons similaires
+  const selected = [];
+  const selectedSectors = new Set();
+
+  for (const job of sorted) {
+    // Permettre maximum 2 métiers du même secteur
+    const sectorCount = Array.from(selectedSectors).filter(s => s === job.sector).length;
+    if (sectorCount < 2 || !selectedSectors.has(job.sector)) {
+      selected.push(job);
+      if (job.sector) selectedSectors.add(job.sector);
+      if (selected.length === 5) break;
+    }
+  }
+
+  // Si pas assez de résultats (cas rare), ajouter les meilleurs restants
+  if (selected.length < 5) {
+    for (const job of sorted) {
+      if (!selected.includes(job)) {
+        selected.push(job);
+        if (selected.length === 5) break;
+      }
+    }
+  }
+
+  return selected.map((job, idx) => ({ ...job, rank_idx: idx }));
 };
 
 app.extractTopStrengths = function() {
