@@ -82,17 +82,26 @@ function showWelcomeScreen() {
 
 // ===== DÉMARRAGE DU PARCOURS =====
 app.startJourney = function() {
-  console.log('🎯 startJourney called');
-  this.currentOnboardingStep = 0;
-  this.userProfile = {};
-  this.userResponses = {};
-  this.userScores = {};
-  this.currentStep = 0;
-  console.log('📝 About to call renderOnboarding');
-  this.renderOnboarding();
-  console.log('📝 renderOnboarding done, about to call showScreen');
-  showScreen('onboarding-screen');
-  console.log('✅ showScreen done, onboarding screen should be visible');
+  try {
+    console.log('🎯 startJourney called');
+    console.log('Data exists?', !!this.data);
+    console.log('Data steps?', this.data ? this.data.steps.length : 'NO DATA');
+
+    this.currentOnboardingStep = 0;
+    this.userProfile = {};
+    this.userResponses = {};
+    this.userScores = {};
+    this.currentStep = 0;
+
+    console.log('📝 About to call renderOnboarding');
+    this.renderOnboarding();
+    console.log('📝 renderOnboarding done, about to call showScreen');
+    showScreen('onboarding-screen');
+    console.log('✅ showScreen done, onboarding screen should be visible');
+  } catch (error) {
+    console.error('❌ ERROR in startJourney:', error);
+    console.error('Stack:', error.stack);
+  }
 };
 
 app.autoFillAnswers = function() {
