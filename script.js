@@ -72,8 +72,27 @@ const app = {
 
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+  console.log(`🎬 showScreen called with screenId: ${screenId}`);
+
+  // Remove active from all screens
+  const allScreens = document.querySelectorAll('.screen');
+  console.log(`Total screens in DOM: ${allScreens.length}`);
+  allScreens.forEach(s => {
+    const id = s.id;
+    const hasActive = s.classList.contains('active');
+    s.classList.remove('active');
+    console.log(`  - Screen ${id}: had active=${hasActive}, now removed`);
+  });
+
+  // Add active to target screen
+  const targetScreen = document.getElementById(screenId);
+  if (targetScreen) {
+    targetScreen.classList.add('active');
+    console.log(`✅ Successfully added 'active' class to ${screenId}`);
+    console.log(`   Display computed style: ${window.getComputedStyle(targetScreen).display}`);
+  } else {
+    console.error(`❌ ERROR: Screen with id "${screenId}" not found!`);
+  }
 }
 
 function showWelcomeScreen() {
