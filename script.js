@@ -257,10 +257,13 @@ app.renderJourneyScreen = function() {
     return;
   }
 
+  // Afficher l'écran AVANT de remplir le contenu
+  showScreen('journey-screen');
+
+  // Puis remplir le contenu
   this.renderStep();
   this.renderSidebar();
   this.updateDailyChallenge();
-  showScreen('journey-screen');
 };
 
 app.getModuleIllustration = function(moduleId) {
