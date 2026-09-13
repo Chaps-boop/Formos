@@ -392,7 +392,49 @@ app.generateResults = function() {
     motivation: this.extractMotivation()
   };
 
+  // Sélectionner les 5 meilleurs métiers
+  this.selectedRecommendations = this.selectBestRecommendations(profile);
+
   return profile;
+};
+
+app.selectBestRecommendations = function(profile) {
+  const scored = this.data.recommendations.map(job => {
+    let score = job.compatibility || 70;
+
+    // Bonus si les valeurs correspondent
+    if (job.values_match && profile.topValues.length > 0) {
+      const valueMatches = profile.topValues.filter(v =>
+        job.values_match.some(jv => v.toLowerCase().includes(jv.toLowerCase()))
+      ).length;
+      score += (valueMatches * 5);
+    }
+
+    // Bonus si les compétences correspondent
+    if (job.user_skills && profile.topStrengths.length > 0) {
+      const skillMatches = profile.topStrengths.filter(s =>
+        job.user_skills.some(js => s.toLowerCase().includes(js.toLowerCase()))
+      ).length;
+      score += (skillMatches * 3);
+    }
+
+    // Bonus si le secteur correspond aux réponses
+    const responses = Object.values(this.userResponses).map(r => r.text || '').join(' ').toLowerCase();
+    if (job.sector && responses.includes(job.sector.toLowerCase())) {
+      score += 10;
+    }
+
+    // Ajouter un peu de variété (randomiser un peu)
+    score += Math.random() * 5;
+
+    return { ...job, score };
+  });
+
+  // Retourner les 5 meilleurs
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5)
+    .map((job, idx) => ({ ...job, rank_idx: idx }));
 };
 
 app.extractTopStrengths = function() {
@@ -563,8 +605,8 @@ app.renderResults = function() {
     <p>5 chemins adaptés à votre profil unique - Du premier pas au sommet</p>
   </div><div class="job-matching-cards">`;
 
-  this.data.recommendations.forEach((rec, idx) => {
-    const compatibility = 85 - (idx * 5);
+  this.selectedRecommendations.forEach((rec, idx) => {
+    const compatibility = Math.round(rec.score || (85 - (idx * 5)));
     const medals = ['🥇', '🥈', '🥉', '🏔️', '⛰️'];
     const userSkills = rec.user_skills || [];
 
@@ -652,12 +694,12 @@ app.renderResults = function() {
   // Onglet plan d'action détaillé
   let actionHtml = `<div class="action-intro">
     <h2>📋 Votre Plan d'Action Personnalisé</h2>
-    <p>Étapes concrètes pour ${this.data.recommendations[0].title}</p>
+    <p>Étapes concrètes pour ${this.selectedRecommendations[0]?.title || 'votre carrière'}</p>
   </div>`;
 
   actionHtml += `<div class="action-timeline">`;
 
-  this.data.recommendations[0]?.action_items.forEach((item, idx) => {
+  this.selectedRecommendations[0]?.action_items.forEach((item, idx) => {
     const icons = ['🎯', '📚', '🤝', '🚀'];
     const timeframes = ['Immédiat (1-2 semaines)', 'À court terme (1-3 mois)', 'À moyen terme (3-6 mois)', 'À long terme (6-12 mois)'];
 

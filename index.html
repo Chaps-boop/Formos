@@ -11,47 +11,50 @@
     <section id="welcome-screen" class="screen">
         <div class="welcome-container">
             <div class="logo-welcome">
-                <svg class="mountain-illustration" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Ciel -->
+                <svg class="footsteps-illustration" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#e0e7ff;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#f0f4ff;stop-opacity:1" />
-                        </linearGradient>
-                        <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="footstepGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#2c5282;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#1a365d;stop-opacity:1" />
-                        </linearGradient>
-                        <linearGradient id="peakGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#c9934f;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#a67c52;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1e5631;stop-opacity:1" />
                         </linearGradient>
                     </defs>
+                    <!-- Sentier de pas -->
+                    <path d="M 30 180 Q 70 160 110 140 Q 150 120 190 100 Q 230 80 270 40" stroke="url(#footstepGradient1)" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.3"/>
 
-                    <!-- Arrière-plan ciel -->
-                    <rect width="200" height="180" fill="url(#skyGradient)"/>
+                    <!-- Empreintes de pas progressives -->
+                    <!-- Pied 1 (bas-gauche) -->
+                    <ellipse cx="35" cy="175" rx="12" ry="20" fill="#2c5282" opacity="0.3"/>
+                    <circle cx="32" cy="158" r="4" fill="#2c5282" opacity="0.25"/>
+                    <circle cx="38" cy="160" r="3.5" fill="#2c5282" opacity="0.25"/>
 
-                    <!-- Montagne principale (gauche) -->
-                    <polygon points="20,140 80,40 140,140" fill="url(#mountainGradient)" opacity="0.8"/>
+                    <!-- Pied 2 -->
+                    <ellipse cx="75" cy="160" rx="13" ry="21" fill="#2c5282" opacity="0.4" transform="rotate(-15 75 160)"/>
+                    <circle cx="72" cy="140" r="4.5" fill="#2c5282" opacity="0.3"/>
+                    <circle cx="78" cy="142" r="4" fill="#2c5282" opacity="0.3"/>
 
-                    <!-- Montagne (centre-droit) -->
-                    <polygon points="100,160 140,60 180,160" fill="url(#mountainGradient)" opacity="0.9"/>
+                    <!-- Pied 3 -->
+                    <ellipse cx="120" cy="140" rx="13" ry="22" fill="#2c5282" opacity="0.5" transform="rotate(-25 120 140)"/>
+                    <circle cx="117" cy="118" r="5" fill="#2c5282" opacity="0.35"/>
+                    <circle cx="123" cy="120" r="4.5" fill="#2c5282" opacity="0.35"/>
 
-                    <!-- Sommet principal doré -->
-                    <polygon points="140,60 155,40 165,65" fill="url(#peakGradient)"/>
+                    <!-- Pied 4 -->
+                    <ellipse cx="165" cy="115" rx="14" ry="23" fill="#2c5282" opacity="0.6" transform="rotate(-35 165 115)"/>
+                    <circle cx="161" cy="91" r="5.5" fill="#2c5282" opacity="0.4"/>
+                    <circle cx="168" cy="93" r="5" fill="#2c5282" opacity="0.4"/>
 
-                    <!-- Chemin de progression (ligne pointillée) -->
-                    <path d="M 80 40 Q 110 35 140 60" stroke="#d4a574" stroke-width="2" fill="none" stroke-dasharray="4,4" opacity="0.7"/>
+                    <!-- Pied 5 -->
+                    <ellipse cx="210" cy="90" rx="14" ry="23" fill="#2c5282" opacity="0.7" transform="rotate(-45 210 90)"/>
+                    <circle cx="206" cy="65" r="6" fill="#2c5282" opacity="0.45"/>
+                    <circle cx="214" cy="67" r="5.5" fill="#2c5282" opacity="0.45"/>
 
-                    <!-- Étapes du chemin -->
-                    <circle cx="80" cy="40" r="3" fill="#c9934f"/>
-                    <circle cx="100" cy="36" r="2.5" fill="#c9934f" opacity="0.6"/>
-                    <circle cx="120" cy="45" r="2.5" fill="#c9934f" opacity="0.6"/>
-                    <circle cx="140" cy="60" r="3" fill="#c9934f"/>
+                    <!-- Pied 6 (sommet - plus coloré) -->
+                    <ellipse cx="255" cy="50" rx="15" ry="25" fill="#c9934f" opacity="0.9" transform="rotate(-55 255 50)"/>
+                    <circle cx="250" cy="20" r="7" fill="#c9934f" opacity="0.7"/>
+                    <circle cx="259" cy="22" r="6" fill="#c9934f" opacity="0.7"/>
 
-                    <!-- Nuages decoratifs -->
-                    <ellipse cx="50" cy="20" rx="20" ry="12" fill="white" opacity="0.3"/>
-                    <ellipse cx="170" cy="30" rx="18" ry="10" fill="white" opacity="0.2"/>
+                    <!-- Drapeau de destination -->
+                    <line x1="275" y1="15" x2="275" y2="50" stroke="#c9934f" stroke-width="3"/>
+                    <polygon points="275,15 290,22 275,30" fill="#c9934f"/>
                 </svg>
             </div>
             <h1>Cent pas vers un autre avenir</h1>
