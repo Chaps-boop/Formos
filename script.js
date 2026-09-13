@@ -82,6 +82,7 @@ function showWelcomeScreen() {
 
 // ===== DÉMARRAGE DU PARCOURS =====
 app.startJourney = function() {
+  console.log('🎯 startJourney called');
   this.currentOnboardingStep = 0;
   this.userProfile = {};
   this.userResponses = {};
@@ -207,6 +208,7 @@ window.selectOption = function(value) {
 };
 
 app.nextOnboarding = function() {
+  console.log('📋 nextOnboarding called, step:', this.currentOnboardingStep);
   const question = this.data.onboarding[this.currentOnboardingStep];
   const form = document.getElementById('onboarding-form');
   const input = form.querySelector('input, textarea, select');
@@ -225,6 +227,7 @@ app.nextOnboarding = function() {
     this.currentOnboardingStep++;
     this.renderOnboarding();
   } else {
+    console.log('✅ Onboarding complété, démarrage du parcours');
     this.currentStep = 0;
     this.renderJourneyScreen();
     showScreen('journey-screen');
@@ -240,7 +243,10 @@ app.prevOnboarding = function() {
 
 // ===== ÉCRAN PRINCIPAL DU PARCOURS =====
 app.renderJourneyScreen = function() {
+  console.log('🚀 renderJourneyScreen called, currentStep:', this.currentStep, 'total:', this.data.steps.length);
+
   if (this.currentStep >= this.data.steps.length) {
+    console.log('✅ Parcours terminé');
     this.showResults();
     return;
   }
