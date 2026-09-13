@@ -88,8 +88,11 @@ app.startJourney = function() {
   this.userResponses = {};
   this.userScores = {};
   this.currentStep = 0;
+  console.log('📝 About to call renderOnboarding');
   this.renderOnboarding();
+  console.log('📝 renderOnboarding done, about to call showScreen');
   showScreen('onboarding-screen');
+  console.log('✅ showScreen done, onboarding screen should be visible');
 };
 
 app.autoFillAnswers = function() {
