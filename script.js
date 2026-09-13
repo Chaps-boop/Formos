@@ -72,8 +72,14 @@ const app = {
 
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
+  console.log(`showScreen: ${screenId}`);
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+  const screen = document.getElementById(screenId);
+  if (screen) {
+    screen.classList.add('active');
+  } else {
+    console.error(`❌ Écran non trouvé: ${screenId}`);
+  }
 }
 
 function showWelcomeScreen() {
@@ -243,7 +249,10 @@ app.prevOnboarding = function() {
 
 // ===== ÉCRAN PRINCIPAL DU PARCOURS =====
 app.renderJourneyScreen = function() {
+  console.log(`renderJourneyScreen: currentStep=${this.currentStep}, total=${this.data.steps.length}`);
+
   if (this.currentStep >= this.data.steps.length) {
+    console.log('✅ Fin du parcours détectée, affichage des résultats');
     this.showResults();
     return;
   }
@@ -478,9 +487,11 @@ app.updateDailyChallenge = function() {
 
 app.nextStep = function() {
   const step = this.data.steps[this.currentStep];
+  console.log(`nextStep: currentStep=${this.currentStep}, step exists=${!!step}`);
 
   // Si on est au-delà de la dernière étape, afficher les résultats
   if (!step) {
+    console.log('⚠️ Pas de step trouvée, affichage des résultats');
     this.showResults();
     return;
   }
