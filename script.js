@@ -26,6 +26,10 @@ const app = {
       alert('Erreur: Impossible de charger les données. Vérifiez votre connexion.');
     }
   },
+
+  checkSavedState: function() {
+    const saved = localStorage.getItem('centPasState');
+    if (saved) {
       this.savedState = JSON.parse(saved);
       document.getElementById('continue-btn').style.display = 'inline-block';
       document.getElementById('start-btn').style.display = 'none';
@@ -412,76 +416,196 @@ app.extractMotivation = function() {
   return this.userProfile.motivation || 'Transformation professionnelle';
 };
 
+app.triggerConfetti = function() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'confetti-canvas';
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '9999';
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confetti = [];
+  const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#06b6d4'];
+
+  for (let i = 0; i < 100; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: -10,
+      vx: Math.random() * 4 - 2,
+      vy: Math.random() * 5 + 5,
+      life: 1,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    });
+  }
+
+  const animate = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let active = false;
+
+    confetti.forEach(p => {
+      if (p.life > 0) {
+        active = true;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.1;
+        p.life -= 0.01;
+
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 5, 5);
+      }
+    });
+
+    if (active) requestAnimationFrame(animate);
+    else canvas.remove();
+  };
+  animate();
+};
+
 app.renderResults = function() {
   const profile = this.generateResults();
+  this.triggerConfetti();
 
   // Onglet profil
-  let profileHtml = '';
-  profileHtml += `<div class="profile-item">
-    <h4>Votre nom</h4>
-    <div class="profile-item-value">${profile.name}</div>
+  let profileHtml = `<div class="profile-summary">
+    <div class="profile-header">
+      <h2>🎯 Votre Profil Détaillé</h2>
+      <p class="profile-intro">Découvrez votre bilan complet de compétences et aptitudes</p>
+    </div>
   </div>`;
 
-  profileHtml += `<div class="profile-item">
-    <h4>Situation actuelle</h4>
-    <div class="profile-item-value">${profile.situation}</div>
+  profileHtml += `<div class="profile-grid">
+    <div class="profile-item">
+      <div class="profile-icon">👤</div>
+      <h4>Votre nom</h4>
+      <div class="profile-item-value">${profile.name}</div>
+    </div>
+
+    <div class="profile-item">
+      <div class="profile-icon">💼</div>
+      <h4>Situation actuelle</h4>
+      <div class="profile-item-value">${profile.situation}</div>
+    </div>
+
+    <div class="profile-item">
+      <div class="profile-icon">📖</div>
+      <h4>Style d'apprentissage</h4>
+      <div class="profile-item-value">${profile.learningStyle}</div>
+    </div>
+
+    <div class="profile-item">
+      <div class="profile-icon">✨</div>
+      <h4>Personnalité</h4>
+      <div class="profile-item-value">${profile.personality || 'Unique'}</div>
+    </div>
+
+    <div class="profile-item">
+      <div class="profile-icon">💪</div>
+      <h4>Points forts clés</h4>
+      <div class="profile-item-value badge-highlight">${profile.topStrengths.length}</div>
+      <p class="profile-item-desc">identifiés</p>
+    </div>
+
+    <div class="profile-item">
+      <div class="profile-icon">🎨</div>
+      <h4>Valeurs principales</h4>
+      <div class="profile-item-value badge-highlight">${profile.topValues.length}</div>
+      <p class="profile-item-desc">clarifiées</p>
+    </div>
   </div>`;
 
-  profileHtml += `<div class="profile-item">
-    <h4>Style d'apprentissage</h4>
-    <div class="profile-item-value">${profile.learningStyle}</div>
-  </div>`;
+  // Modules complétés avec badges
+  const completedModules = Object.keys(this.userScores || {}).length;
+  profileHtml += `<div class="modules-completed">
+    <h3>📈 Parcours Complété</h3>
+    <div class="modules-badges">`;
 
-  profileHtml += `<div class="profile-item">
-    <h4>Personnalité</h4>
-    <div class="profile-item-value">${profile.personality || 'Unique'}</div>
-  </div>`;
+  const moduleNames = ['Profiling', 'Compétences', 'Valeurs', 'Expériences', 'Personnalité', 'Exploration'];
+  moduleNames.forEach((name, idx) => {
+    profileHtml += `<span class="badge-module">✓ ${name}</span>`;
+  });
 
-  profileHtml += `<div class="profile-item">
-    <h4>Points forts clés</h4>
-    <div class="profile-item-value">${profile.topStrengths.length} identifiés</div>
-  </div>`;
-
-  profileHtml += `<div class="profile-item">
-    <h4>Valeurs principales</h4>
-    <div class="profile-item-value">${profile.topValues.length} clarifiées</div>
-  </div>`;
+  profileHtml += `</div></div>`;
 
   document.getElementById('profile-grid').innerHTML = profileHtml;
 
-  // Onglet recommandations
-  let recsHtml = '';
+  // Onglet recommandations enrichies
+  let recsHtml = `<div class="recommendations-intro">
+    <h2>🚀 Vos 5 Meilleures Orientations Professionnelles</h2>
+    <p>Basées sur votre profil unique et vos préférences</p>
+  </div>`;
+
   this.data.recommendations.forEach((rec, idx) => {
     const compatibility = 85 - (idx * 5);
+    const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
     recsHtml += `
-      <div class="recommendation-card">
-        <div class="recommendation-rank">${idx + 1}</div>
-        <h3>${rec.title}</h3>
-        <div class="compatibility-score">Compatibilité: ${compatibility}%</div>
-        <div class="score-bar">
-          <div class="score-fill" style="width: ${compatibility}%"></div>
+      <div class="recommendation-card recommendation-rank-${idx + 1}">
+        <div class="recommendation-medal">${medals[idx]}</div>
+        <div class="recommendation-content">
+          <h3>${rec.title}</h3>
+          <p class="recommendation-desc">${rec.description}</p>
+
+          <div class="compatibility-section">
+            <div class="compatibility-label">
+              <span>Compatibilité</span>
+              <span class="compatibility-percent">${compatibility}%</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-fill" style="width: ${compatibility}%"></div>
+            </div>
+          </div>
+
+          <div class="recommendation-meta">
+            <div class="meta-item">
+              <span class="meta-label">💰 Salaire</span>
+              <span class="meta-value">${rec.avg_salary}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">📈 Demande</span>
+              <span class="meta-value">Élevée</span>
+            </div>
+          </div>
         </div>
-        <p>${rec.description}</p>
-        <p><strong>Salaire moyen:</strong> ${rec.avg_salary}</p>
       </div>
     `;
   });
+
   document.getElementById('recommendations-list').innerHTML = recsHtml;
 
-  // Onglet plan d'action
-  let actionHtml = '';
+  // Onglet plan d'action détaillé
+  let actionHtml = `<div class="action-intro">
+    <h2>📋 Votre Plan d'Action Personnalisé</h2>
+    <p>Étapes concrètes pour ${this.data.recommendations[0].title}</p>
+  </div>`;
+
+  actionHtml += `<div class="action-timeline">`;
+
   this.data.recommendations[0]?.action_items.forEach((item, idx) => {
     const icons = ['🎯', '📚', '🤝', '🚀'];
+    const timeframes = ['Immédiat (1-2 semaines)', 'À court terme (1-3 mois)', 'À moyen terme (3-6 mois)', 'À long terme (6-12 mois)'];
+
     actionHtml += `
-      <div class="action-step">
-        <div class="action-step-icon">${icons[idx % icons.length]}</div>
+      <div class="action-step" style="animation-delay: ${idx * 0.1}s">
+        <div class="action-step-number">${idx + 1}</div>
         <div class="action-step-content">
-          <h4>Étape ${idx + 1}</h4>
-          <p>${item}</p>
+          <h4>${icons[idx % icons.length]} ${item}</h4>
+          <p class="action-timeframe">${timeframes[idx % timeframes.length]}</p>
         </div>
+        <div class="action-step-bullet"></div>
       </div>
     `;
   });
+
+  actionHtml += `</div>`;
+
   document.getElementById('action-plan').innerHTML = actionHtml;
 };
 
