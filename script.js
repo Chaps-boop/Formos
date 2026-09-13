@@ -91,15 +91,23 @@ app.startJourney = function() {
 };
 
 app.continueJourney = function() {
+  console.log('🔄 continueJourney called');
   const saved = this.savedState;
+  console.log('Saved state:', saved);
+
   this.currentStep = saved.currentStep;
   this.userProfile = saved.userProfile;
   this.userResponses = saved.userResponses;
   this.userScores = saved.userScores;
 
+  console.log('Current step:', this.currentStep);
+  console.log('Total steps:', this.data.steps.length);
+
   if (this.currentStep >= this.data.steps.length) {
+    console.log('✓ Journey complete, showing results');
     this.showResults();
   } else {
+    console.log('✓ Journey in progress, showing journey screen');
     this.renderJourneyScreen();
     showScreen('journey-screen');
   }
