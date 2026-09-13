@@ -7,6 +7,7 @@ const app = {
   userResponses: {},
   userScores: {},
   savedState: null,
+  isTestMode: false,
 
   init: async function() {
     console.log('🔧 APP INIT STARTING - Version with screen visibility fixes');
@@ -116,6 +117,7 @@ app.startJourney = function() {
     console.log('Data exists?', !!this.data);
     console.log('Data steps?', this.data ? this.data.steps.length : 'NO DATA');
 
+    this.isTestMode = false;
     this.currentOnboardingStep = 0;
     this.userProfile = {};
     this.userResponses = {};
@@ -135,6 +137,7 @@ app.startJourney = function() {
 
 app.autoFillAnswers = function() {
   // Profil de test
+  this.isTestMode = true;
   this.currentOnboardingStep = 0;
   this.userProfile = {
     name: 'Test Utilisateur',
@@ -299,6 +302,35 @@ app.renderJourneyScreen = function() {
 
   // Puis afficher l'écran
   showScreen('journey-screen');
+
+  // Afficher le bouton "Aller à la question 99" si en mode test
+  this.updateTestModeButton();
+};
+
+app.updateTestModeButton = function() {
+  const stepActions = document.querySelector('.step-actions');
+  if (!stepActions) return;
+
+  // Chercher ou créer le bouton de test
+  let testBtn = document.getElementById('goto-step99-btn');
+
+  if (this.isTestMode && this.currentStep < 99) {
+    if (!testBtn) {
+      testBtn = document.createElement('button');
+      testBtn.id = 'goto-step99-btn';
+      testBtn.className = 'btn btn-outline';
+      testBtn.textContent = '⚡ Aller à la question 99';
+      testBtn.onclick = () => this.goToStep99();
+      stepActions.appendChild(testBtn);
+    }
+  } else if (testBtn) {
+    testBtn.remove();
+  }
+};
+
+app.goToStep99 = function() {
+  this.currentStep = 99;
+  this.renderJourneyScreen();
 };
 
 app.getModuleIllustration = function(moduleId) {
