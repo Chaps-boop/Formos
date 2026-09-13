@@ -71,14 +71,19 @@ const app = {
 
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+
   const screen = document.getElementById(screenId);
   screen.classList.add('active');
 
-  // Force flex layout for journey screen
+  // Force display for all screens
   if (screenId === 'journey-screen') {
-    screen.style.display = 'flex';
-    screen.style.flexDirection = 'row';
+    screen.style.cssText = 'display: flex !important; flex-direction: row !important;';
+  } else {
+    screen.style.cssText = 'display: block !important;';
   }
 }
 
