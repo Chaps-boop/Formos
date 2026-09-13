@@ -1119,7 +1119,7 @@ body {
     display: inline-block;
     padding: 8px 16px;
     background: linear-gradient(135deg, var(--secondary), var(--accent));
-    color: white;
+    color: #000000;
     border-radius: 20px;
     font-weight: 600;
     font-size: 14px;
