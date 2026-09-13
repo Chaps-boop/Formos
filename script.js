@@ -72,14 +72,8 @@ const app = {
 
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
-  console.log(`showScreen: ${screenId}`);
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const screen = document.getElementById(screenId);
-  if (screen) {
-    screen.classList.add('active');
-  } else {
-    console.error(`❌ Écran non trouvé: ${screenId}`);
-  }
+  document.getElementById(screenId).classList.add('active');
 }
 
 function showWelcomeScreen() {
@@ -98,8 +92,6 @@ app.startJourney = function() {
 };
 
 app.autoFillAnswers = function() {
-  console.log('🧪 Démarrage du remplissage automatique...');
-
   // Profil de test
   this.currentOnboardingStep = 0;
   this.userProfile = {
@@ -133,7 +125,6 @@ app.autoFillAnswers = function() {
         selectedOption: option.text,
         scores: option.score || {}
       };
-      // Appliquer les scores
       Object.keys(option.score || {}).forEach(key => {
         this.userScores[key] = (this.userScores[key] || 0) + option.score[key];
       });
@@ -153,9 +144,9 @@ app.autoFillAnswers = function() {
     }
   }
 
-  console.log('✅ Remplissage automatique complété');
-  this.currentStep = this.data.steps.length;
-  this.showResults();
+  // Afficher le parcours depuis la première étape
+  this.currentStep = 0;
+  this.renderJourneyScreen();
 };
 
 app.continueJourney = function() {
@@ -249,18 +240,12 @@ app.prevOnboarding = function() {
 
 // ===== ÉCRAN PRINCIPAL DU PARCOURS =====
 app.renderJourneyScreen = function() {
-  console.log(`renderJourneyScreen: currentStep=${this.currentStep}, total=${this.data.steps.length}`);
-
   if (this.currentStep >= this.data.steps.length) {
-    console.log('✅ Fin du parcours détectée, affichage des résultats');
     this.showResults();
     return;
   }
 
-  // Afficher l'écran AVANT de remplir le contenu
   showScreen('journey-screen');
-
-  // Puis remplir le contenu
   this.renderStep();
   this.renderSidebar();
   this.updateDailyChallenge();
@@ -490,11 +475,9 @@ app.updateDailyChallenge = function() {
 
 app.nextStep = function() {
   const step = this.data.steps[this.currentStep];
-  console.log(`nextStep: currentStep=${this.currentStep}, step exists=${!!step}`);
 
   // Si on est au-delà de la dernière étape, afficher les résultats
   if (!step) {
-    console.log('⚠️ Pas de step trouvée, affichage des résultats');
     this.showResults();
     return;
   }
