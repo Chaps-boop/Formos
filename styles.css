@@ -74,13 +74,13 @@ body {
 
 /* PARCOURS */
 #journey-screen {
-    display: grid;
-    grid-template-columns: 300px 1fr 280px;
-    grid-template-rows: auto 1fr auto;
-    gap: 20px;
-    padding: 20px;
-    min-height: 100vh;
-    box-sizing: border-box;
+    display: grid !important;
+    grid-template-columns: 300px 1fr 280px !important;
+    grid-template-rows: auto 1fr auto !important;
+    gap: 20px !important;
+    padding: 20px !important;
+    min-height: 100vh !important;
+    box-sizing: border-box !important;
 }
 
 .sidebar-modules {
