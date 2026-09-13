@@ -562,49 +562,6 @@ body {
 }
 
 /* PARCOURS */
-#journey-screen {
-    display: grid;
-    grid-template-columns: 300px 1fr 280px;
-    grid-template-rows: auto 1fr auto;
-    gap: 20px;
-    padding: 20px;
-    min-height: 100vh;
-    box-sizing: border-box;
-}
-
-.sidebar-modules {
-    grid-column: 1;
-    grid-row: 1 / 3;
-}
-
-.main-content {
-    grid-column: 2;
-    grid-row: 1 / 3;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.sidebar-profile {
-    grid-column: 3;
-    grid-row: 1;
-}
-
-.progress-footer {
-    grid-column: 1 / 4;
-    grid-row: 3;
-}
-
-.sidebar-modules {
-    background: var(--bg-white);
-    padding: 20px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    position: sticky;
-    top: 20px;
-    height: fit-content;
-}
-
 .sidebar-profile {
     background: var(--bg-white);
     padding: 20px;
