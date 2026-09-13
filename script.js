@@ -7,11 +7,22 @@ const app = {
   userResponses: {},
   userScores: {},
   savedState: null,
+  isTestMode: false,
 
   init: async function() {
+    console.log('🔧 APP INIT STARTING - Version with screen visibility fixes');
+    console.log('📍 Screen elements in DOM:', {
+      welcome: !!document.getElementById('welcome-screen'),
+      onboarding: !!document.getElementById('onboarding-screen'),
+      journey: !!document.getElementById('journey-screen'),
+      results: !!document.getElementById('results-screen')
+    });
+
     await this.loadData();
     this.checkSavedState();
     this.setupEventListeners();
+
+    console.log('✅ APP INIT COMPLETE - Ready for user interaction');
     showWelcomeScreen();
   },
 
@@ -50,6 +61,7 @@ const app = {
   setupEventListeners: function() {
     document.getElementById('start-btn').addEventListener('click', () => this.startJourney());
     document.getElementById('continue-btn').addEventListener('click', () => this.continueJourney());
+    document.getElementById('test-btn').addEventListener('click', () => this.autoFillAnswers());
 
     document.getElementById('onboarding-next').addEventListener('click', () => this.nextOnboarding());
     document.getElementById('onboarding-prev').addEventListener('click', () => this.prevOnboarding());
@@ -71,8 +83,27 @@ const app = {
 
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+  console.log(`🎬 showScreen called with screenId: ${screenId}`);
+
+  // Remove active from all screens
+  const allScreens = document.querySelectorAll('.screen');
+  console.log(`Total screens in DOM: ${allScreens.length}`);
+  allScreens.forEach(s => {
+    const id = s.id;
+    const hasActive = s.classList.contains('active');
+    s.classList.remove('active');
+    console.log(`  - Screen ${id}: had active=${hasActive}, now removed`);
+  });
+
+  // Add active to target screen
+  const targetScreen = document.getElementById(screenId);
+  if (targetScreen) {
+    targetScreen.classList.add('active');
+    console.log(`✅ Successfully added 'active' class to ${screenId}`);
+    console.log(`   Display computed style: ${window.getComputedStyle(targetScreen).display}`);
+  } else {
+    console.error(`❌ ERROR: Screen with id "${screenId}" not found!`);
+  }
 }
 
 function showWelcomeScreen() {
@@ -81,13 +112,103 @@ function showWelcomeScreen() {
 
 // ===== DÉMARRAGE DU PARCOURS =====
 app.startJourney = function() {
+  try {
+    console.log('🎯 startJourney called');
+    console.log('Data exists?', !!this.data);
+    console.log('Data steps?', this.data ? this.data.steps.length : 'NO DATA');
+
+    this.isTestMode = false;
+    this.currentOnboardingStep = 0;
+    this.userProfile = {};
+    this.userResponses = {};
+    this.userScores = {};
+    this.currentStep = 0;
+
+    console.log('📝 About to call renderOnboarding');
+    this.renderOnboarding();
+    console.log('📝 renderOnboarding done, about to call showScreen');
+    showScreen('onboarding-screen');
+    console.log('✅ showScreen done, onboarding screen should be visible');
+  } catch (error) {
+    console.error('❌ ERROR in startJourney:', error);
+    console.error('Stack:', error.stack);
+  }
+};
+
+app.autoFillAnswers = function() {
+  console.log('🧪 autoFillAnswers called - entering test mode');
+  // Profil de test
+  this.isTestMode = true;
+  console.log('isTestMode set to:', this.isTestMode);
   this.currentOnboardingStep = 0;
-  this.userProfile = {};
+  this.userProfile = {
+    name: 'Test Utilisateur',
+    situation: 'Salarié en reconversion',
+    years_experience: '5-10 ans',
+    sector: 'Technologie',
+    motivation: 'Développement personnel',
+    constraints: 'Aucune'
+  };
+
   this.userResponses = {};
   this.userScores = {};
   this.currentStep = 0;
-  this.renderOnboarding();
-  showScreen('onboarding-screen');
+
+  // Remplir toutes les étapes automatiquement avec réponses aléatoires
+  const reflectionTexts = [
+    'Cela me passionne vraiment',
+    'C\'est très important pour moi',
+    'Je vois un grand potentiel ici',
+    'Cela correspond à mes valeurs',
+    'Je peux vraiment faire la différence',
+    'C\'est un défi stimulant',
+    'Cela me permet de grandir',
+    'Je me sens capable et motivé'
+  ];
+
+  for (let i = 0; i < this.data.steps.length; i++) {
+    const step = this.data.steps[i];
+
+    if (step.type === 'reflection' || step.type === 'ranking') {
+      const randomText = reflectionTexts[Math.floor(Math.random() * reflectionTexts.length)];
+      this.userResponses[i] = {
+        type: step.type,
+        text: randomText
+      };
+    } else if (step.type === 'quiz') {
+      const randomIdx = Math.floor(Math.random() * step.options.length);
+      const option = step.options[randomIdx];
+      this.userResponses[i] = {
+        type: 'quiz',
+        selectedIdx: randomIdx,
+        selectedOption: option.text,
+        scores: option.score || {}
+      };
+      Object.keys(option.score || {}).forEach(key => {
+        this.userScores[key] = (this.userScores[key] || 0) + option.score[key];
+      });
+    } else if (step.type === 'slider') {
+      const randomIdx = Math.floor(Math.random() * step.scale.length);
+      this.userResponses[i] = {
+        type: 'slider',
+        selectedIdx: randomIdx,
+        selectedLabel: step.scale[randomIdx]
+      };
+    } else if (step.type === 'checklist') {
+      // Sélectionner un nombre aléatoire d'options (entre 1 et toutes)
+      const numToSelect = Math.floor(Math.random() * step.options.length) + 1;
+      const shuffled = [...step.options].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, numToSelect);
+      this.userResponses[i] = {
+        type: 'checklist',
+        selected: selected
+      };
+    }
+  }
+
+  // Afficher le parcours depuis la première étape
+  this.currentStep = 0;
+  this.renderJourneyScreen();
 };
 
 app.continueJourney = function() {
@@ -160,6 +281,7 @@ window.selectOption = function(value) {
 };
 
 app.nextOnboarding = function() {
+  console.log('📋 nextOnboarding called, step:', this.currentOnboardingStep);
   const question = this.data.onboarding[this.currentOnboardingStep];
   const form = document.getElementById('onboarding-form');
   const input = form.querySelector('input, textarea, select');
@@ -178,6 +300,7 @@ app.nextOnboarding = function() {
     this.currentOnboardingStep++;
     this.renderOnboarding();
   } else {
+    console.log('✅ Onboarding complété, démarrage du parcours');
     this.currentStep = 0;
     this.renderJourneyScreen();
     showScreen('journey-screen');
@@ -193,15 +316,61 @@ app.prevOnboarding = function() {
 
 // ===== ÉCRAN PRINCIPAL DU PARCOURS =====
 app.renderJourneyScreen = function() {
+  console.log('🚀 renderJourneyScreen called, currentStep:', this.currentStep, 'total:', this.data.steps.length);
+
   if (this.currentStep >= this.data.steps.length) {
+    console.log('✅ Parcours terminé');
     this.showResults();
     return;
   }
 
+  // Remplir le contenu EN PREMIER (avant d'afficher)
   this.renderStep();
   this.renderSidebar();
   this.updateDailyChallenge();
+
+  // Puis afficher l'écran
   showScreen('journey-screen');
+
+  // Afficher le bouton "Aller à la question 99" si en mode test
+  this.updateTestModeButton();
+};
+
+app.updateTestModeButton = function() {
+  console.log('updateTestModeButton called - isTestMode:', this.isTestMode, 'currentStep:', this.currentStep);
+
+  const stepActions = document.querySelector('.step-actions');
+  if (!stepActions) {
+    console.log('❌ .step-actions element not found!');
+    return;
+  }
+
+  // Chercher ou créer le bouton de test
+  let testBtn = document.getElementById('goto-step99-btn');
+
+  if (this.isTestMode && this.currentStep < 99) {
+    console.log('✅ Should show test button');
+    if (!testBtn) {
+      console.log('Creating new test button');
+      testBtn = document.createElement('button');
+      testBtn.id = 'goto-step99-btn';
+      testBtn.className = 'btn btn-outline';
+      testBtn.textContent = '⚡ Aller à la question 99';
+      testBtn.onclick = () => this.goToStep99();
+      stepActions.appendChild(testBtn);
+      console.log('✅ Test button added to DOM');
+    }
+  } else if (testBtn) {
+    console.log('Removing test button');
+    testBtn.remove();
+  } else {
+    console.log('Test button should not be shown');
+  }
+};
+
+app.goToStep99 = function() {
+  this.currentStep = 99;
+  this.renderJourneyScreen();
 };
 
 app.getModuleIllustration = function(moduleId) {
@@ -259,11 +428,30 @@ app.getModuleIllustration = function(moduleId) {
 };
 
 app.renderStep = function() {
-  const step = this.data.steps[this.currentStep];
-  const module = this.data.modules.find(m => m.id === step.module);
+  console.log('renderStep called, currentStep:', this.currentStep);
 
-  document.getElementById('step-number').textContent = `Étape ${this.currentStep + 1}`;
-  document.getElementById('step-module').textContent = module.name;
+  const step = this.data.steps[this.currentStep];
+  if (!step) {
+    console.error('❌ Step not found at index', this.currentStep);
+    return;
+  }
+
+  const module = this.data.modules.find(m => m.id === step.module);
+  if (!module) {
+    console.error('❌ Module not found for step', step);
+    return;
+  }
+
+  const stepNumberEl = document.getElementById('step-number');
+  const stepModuleEl = document.getElementById('step-module');
+
+  if (!stepNumberEl || !stepModuleEl) {
+    console.error('❌ step-number or step-module element not found');
+    return;
+  }
+
+  stepNumberEl.textContent = `Étape ${this.currentStep + 1}`;
+  stepModuleEl.textContent = module.name;
 
   let content = `<div class="step-header-section">
     ${this.getModuleIllustration(module.id)}
@@ -301,15 +489,49 @@ app.renderStep = function() {
     content += `<textarea id="step-answer" class="step-input" placeholder="Classez les éléments par ordre d'importance" rows="6"></textarea>`;
   }
 
-  // Pré-remplir si réponse existante
-  if (this.userResponses[this.currentStep]) {
-    const response = this.userResponses[this.currentStep];
-    if (step.type === 'reflection' || step.type === 'ranking') {
-      document.getElementById('step-answer').value = response.text || '';
-    }
+  // Insérer le contenu dans le DOM
+  const stepContentEl = document.getElementById('step-content');
+  if (!stepContentEl) {
+    console.error('❌ step-content element not found!');
+    return;
   }
 
-  document.getElementById('step-content').innerHTML = content;
+  console.log('✅ Inserting content for step:', step.title);
+  stepContentEl.innerHTML = content;
+  console.log('✅ Content inserted, innerHTML length:', stepContentEl.innerHTML.length);
+
+  // Pré-remplir les réponses existantes
+  if (this.userResponses[this.currentStep]) {
+    const response = this.userResponses[this.currentStep];
+
+    if ((step.type === 'reflection' || step.type === 'ranking') && response.text) {
+      const textarea = document.getElementById('step-answer');
+      if (textarea) {
+        textarea.value = response.text;
+      }
+    }
+
+    if (step.type === 'quiz' && response.selectedIdx !== undefined) {
+      const btns = document.querySelectorAll('.quiz-option');
+      if (btns[response.selectedIdx]) {
+        btns[response.selectedIdx].classList.add('selected');
+      }
+    }
+
+    if (step.type === 'slider' && response.selectedIdx !== undefined) {
+      const btns = document.querySelectorAll('.slider-option');
+      if (btns[response.selectedIdx]) {
+        btns[response.selectedIdx].classList.add('selected');
+      }
+    }
+
+    if (step.type === 'checklist' && response.selected) {
+      response.selected.forEach(val => {
+        const checkbox = document.querySelector(`input.checklist-item[value="${val}"]`);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+  }
 };
 
 window.selectQuizOption = function(idx) {
@@ -403,6 +625,12 @@ app.updateDailyChallenge = function() {
 app.nextStep = function() {
   const step = this.data.steps[this.currentStep];
 
+  // Si on est au-delà de la dernière étape, afficher les résultats
+  if (!step) {
+    this.showResults();
+    return;
+  }
+
   // Capturer la réponse
   if (step.type === 'reflection' || step.type === 'ranking') {
     const textarea = document.getElementById('step-answer');
@@ -471,41 +699,81 @@ app.generateResults = function() {
 
 app.selectBestRecommendations = function(profile) {
   const scored = this.data.recommendations.map(job => {
-    let score = job.compatibility || 70;
+    // Commencer avec score 0 - ignorer le score de compatibilité par défaut
+    // Cela force le matching basé sur les données réelles de l'utilisateur
+    let score = 0;
 
-    // Bonus si les valeurs correspondent
+    // Valeurs: Bonus majeur si les valeurs correspondent
     if (job.values_match && profile.topValues.length > 0) {
       const valueMatches = profile.topValues.filter(v =>
         job.values_match.some(jv => v.toLowerCase().includes(jv.toLowerCase()))
       ).length;
-      score += (valueMatches * 5);
+      score += (valueMatches * 20); // Poids TRÈS important
+    } else {
+      score -= 15; // Pénalité si pas de match de valeurs
     }
 
-    // Bonus si les compétences correspondent
+    // Compétences: Bonus si les compétences correspondent
     if (job.user_skills && profile.topStrengths.length > 0) {
       const skillMatches = profile.topStrengths.filter(s =>
         job.user_skills.some(js => s.toLowerCase().includes(js.toLowerCase()))
       ).length;
-      score += (skillMatches * 3);
+      score += (skillMatches * 15); // Poids très important
     }
 
-    // Bonus si le secteur correspond aux réponses
-    const responses = Object.values(this.userResponses).map(r => r.text || '').join(' ').toLowerCase();
+    // Secteur: Bonus modéré si le secteur correspond aux réponses
+    const responses = Object.values(this.userResponses).map(r => r.text || r.selectedOption || '').join(' ').toLowerCase();
     if (job.sector && responses.includes(job.sector.toLowerCase())) {
       score += 10;
     }
 
-    // Ajouter un peu de variété (randomiser un peu)
-    score += Math.random() * 5;
+    // Pénalité FORTE pour les métiers trop génériques
+    const genericTerms = ['coaching', 'consultant', 'mentor', 'formateur', 'coach'];
+    const isGeneric = genericTerms.some(term =>
+      job.title.toLowerCase().includes(term)
+    );
+    if (isGeneric) {
+      score -= 30; // Pénalité TRÈS élevée pour génériques
+    }
+
+    // Score de base très réduit (40 au lieu de 70-85)
+    // Cela assure que le matching est vraiment basé sur les données utilisateur
+    score += 40;
+
+    // Très peu d'aléatoire
+    score += Math.random() * 1;
 
     return { ...job, score };
   });
 
-  // Retourner les 5 meilleurs
-  return scored
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5)
-    .map((job, idx) => ({ ...job, rank_idx: idx }));
+  // Retourner les 5 meilleurs avec une meilleure diversification
+  const sorted = scored.sort((a, b) => b.score - a.score);
+
+  // Assurer la diversité en évitant les doublons similaires
+  const selected = [];
+  const selectedSectors = new Set();
+
+  for (const job of sorted) {
+    // Permettre maximum 2 métiers du même secteur
+    const sectorCount = Array.from(selectedSectors).filter(s => s === job.sector).length;
+    if (sectorCount < 2 || !selectedSectors.has(job.sector)) {
+      selected.push(job);
+      if (job.sector) selectedSectors.add(job.sector);
+      if (selected.length === 5) break;
+    }
+  }
+
+  // Si pas assez de résultats (cas rare), ajouter les meilleurs restants
+  if (selected.length < 5) {
+    for (const job of sorted) {
+      if (!selected.includes(job)) {
+        selected.push(job);
+        if (selected.length === 5) break;
+      }
+    }
+  }
+
+  return selected.map((job, idx) => ({ ...job, rank_idx: idx }));
 };
 
 app.extractTopStrengths = function() {
@@ -513,28 +781,186 @@ app.extractTopStrengths = function() {
   const strengths = [];
   Object.keys(this.userResponses).forEach(stepIdx => {
     const step = this.data.steps[stepIdx];
-    if (step.module === 'competencies') {
+    if (step && step.module === 'competencies') {
       const response = this.userResponses[stepIdx];
+      // Gérer les différents types de réponses
       if (response.text) {
         strengths.push(response.text);
+      } else if (response.selectedOption) {
+        strengths.push(response.selectedOption);
+      } else if (response.selected && Array.isArray(response.selected)) {
+        // Pour les checklist
+        response.selected.forEach(item => {
+          if (typeof item === 'string') {
+            strengths.push(item);
+          } else if (item.text) {
+            strengths.push(item.text);
+          }
+        });
       }
     }
   });
-  return strengths.slice(0, 5);
+  return strengths.slice(0, 8); // Augmenter de 5 à 8 pour plus de profondeur
 };
 
 app.extractTopValues = function() {
   const values = [];
   Object.keys(this.userResponses).forEach(stepIdx => {
     const step = this.data.steps[stepIdx];
-    if (step.module === 'values') {
+    if (step && step.module === 'values') {
       const response = this.userResponses[stepIdx];
+      // Gérer les deux types de réponses: reflection (text) et quiz (selectedOption)
       if (response.text) {
         values.push(response.text);
+      } else if (response.selectedOption) {
+        values.push(response.selectedOption);
       }
     }
   });
   return values.slice(0, 5);
+};
+
+app.getSkillTranslation = function(skillKey) {
+  const skillTranslations = {
+    'leadership': 'Leadership',
+    'creativity': 'Créativité',
+    'analytical': 'Analyse',
+    'communication': 'Communication',
+    'technical': 'Techniques',
+    'empathy': 'Empathie',
+    'organization': 'Organisation',
+    'practical': 'Pragmatisme',
+    'theoretical': 'Pensée théorique',
+    'social': 'Compétences sociales',
+    'solitary': 'Travail indépendant',
+    'collaborative': 'Collaboration',
+    'observational': 'Observation',
+    'optimistic': 'Optimisme',
+    'realistic': 'Réalisme',
+    'ambition': 'Ambition',
+    'authenticity': 'Authenticité',
+    'confidence': 'Confiance',
+    'autonomy_need': 'Besoin d\'autonomie',
+    'collaboration_need': 'Besoin de collaboration',
+    'growth_need': 'Soif d\'apprentissage',
+    'purpose_need': 'Besoin de sens',
+    'network_strength': 'Force du réseau',
+    'business': 'Sens des affaires',
+    'environment': 'Sensibilité environnementale',
+    'mobile': 'Mobilité',
+    'leader': 'Capacité de direction',
+    'cautious': 'Prudence',
+    'confrontational': 'Assertivité',
+    'avoidant': 'Évitement',
+    'ethics_priority': 'Éthique',
+    'self_awareness': 'Conscience de soi',
+    'learning_style': 'Style d\'apprentissage',
+    'conflict_style': 'Style de gestion de conflits',
+    'current_alignment': 'Alignement actuel',
+    'personality': 'Personnalité',
+    'outlook': 'Perspective',
+    'readiness': 'Préparation',
+    'transferability': 'Transférabilité'
+  };
+
+  return skillTranslations[skillKey] || skillKey;
+};
+
+app.generateSkillsRadarChart = function(topSkills) {
+  if (!topSkills || topSkills.length === 0) return '';
+
+  const size = 400;
+  const center = size / 2;
+  const maxScore = 50;
+  const radius = 120;
+  const levels = 5;
+
+  // Créer les points du radar
+  const numSkills = topSkills.length;
+  const angleSlice = (Math.PI * 2) / numSkills;
+
+  // Générer les lignes de grille et les polygones
+  let gridLines = '';
+  for (let level = 1; level <= levels; level++) {
+    const r = (radius / levels) * level;
+    const points = [];
+    for (let i = 0; i < numSkills; i++) {
+      const angle = angleSlice * i - Math.PI / 2;
+      const x = center + r * Math.cos(angle);
+      const y = center + r * Math.sin(angle);
+      points.push(`${x},${y}`);
+    }
+    gridLines += `<polygon points="${points.join(' ')}" class="radar-grid" />`;
+
+    // Ajouter les labels de niveau
+    const angle = -Math.PI / 2;
+    const x = center + r * Math.cos(angle);
+    const y = center + r * Math.sin(angle) - 10;
+    gridLines += `<text x="${x}" y="${y}" class="radar-level">${Math.round((level / levels) * 100)}%</text>`;
+  }
+
+  // Générer les axes radiaux
+  let axes = '';
+  const skillLabels = [];
+  const dataPoints = [];
+
+  topSkills.forEach(([skill, score], i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const labelRadius = radius + 35;
+    const x = center + labelRadius * Math.cos(angle);
+    const y = center + labelRadius * Math.sin(angle);
+
+    const skillLabel = this.getSkillTranslation(skill);
+    skillLabels.push({ x, y, label: skillLabel });
+
+    // Ligne axe
+    const axisEndX = center + radius * Math.cos(angle);
+    const axisEndY = center + radius * Math.sin(angle);
+    axes += `<line x1="${center}" y1="${center}" x2="${axisEndX}" y2="${axisEndY}" class="radar-axis" />`;
+
+    // Calculer le point de données
+    const r = (score / maxScore) * radius;
+    const dataX = center + r * Math.cos(angle);
+    const dataY = center + r * Math.sin(angle);
+    dataPoints.push({ x: dataX, y: dataY, score: score });
+  });
+
+  // Créer le polygone de données
+  const dataPolygon = dataPoints.map(p => `${p.x},${p.y}`).join(' ');
+  let dataArea = `<polygon points="${dataPolygon}" class="radar-data" />`;
+
+  // Ajouter les points de données
+  dataPoints.forEach(point => {
+    dataArea += `<circle cx="${point.x}" cy="${point.y}" r="5" class="radar-point" />`;
+  });
+
+  // Ajouter les labels
+  let labels = '';
+  skillLabels.forEach(({ x, y, label }) => {
+    labels += `<text x="${x}" y="${y}" class="radar-label">${label}</text>`;
+  });
+
+  const svg = `
+    <svg class="skills-radar" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          .radar-grid { fill: none; stroke: #ddd; stroke-width: 1; }
+          .radar-axis { stroke: #ccc; stroke-width: 1; }
+          .radar-level { font-size: 12px; fill: #999; text-anchor: middle; }
+          .radar-label { font-size: 13px; font-weight: 600; text-anchor: middle; fill: var(--text-dark); }
+          .radar-data { fill: rgba(99, 102, 241, 0.25); stroke: var(--primary); stroke-width: 2; }
+          .radar-point { fill: var(--primary); }
+        </style>
+      </defs>
+
+      ${gridLines}
+      ${axes}
+      ${dataArea}
+      ${labels}
+    </svg>
+  `;
+
+  return svg;
 };
 
 app.extractPersonality = function() {
@@ -865,6 +1291,79 @@ app.renderResults = function() {
   actionHtml += `</div>`;
 
   document.getElementById('action-plan').innerHTML = actionHtml;
+
+  // Onglet analyse complète
+  let analysisHtml = `<div class="analysis-container">
+    <div class="analysis-header">
+      <h2>📊 Analyse Complète de Votre Profil</h2>
+      <p>Détail de vos compétences, valeurs et styles d'apprentissage</p>
+    </div>`;
+
+  // Section Compétences
+  analysisHtml += `<div class="analysis-section">
+    <h3>💪 Vos Compétences Principales</h3>
+    <div class="skills-chart-container">`;
+
+  const topSkills = Object.entries(this.userScores || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+
+  // Générer le radar chart SVG
+  const radarSvg = this.generateSkillsRadarChart(topSkills);
+  analysisHtml += radarSvg;
+
+  analysisHtml += `</div></div>`;
+
+  // Section Valeurs
+  analysisHtml += `<div class="analysis-section">
+    <h3>✨ Vos Valeurs Clés</h3>
+    <div class="values-list">`;
+
+  (profile.topValues || []).forEach(value => {
+    analysisHtml += `<div class="value-badge">${value}</div>`;
+  });
+
+  analysisHtml += `</div></div>`;
+
+  // Section Style d'apprentissage
+  analysisHtml += `<div class="analysis-section">
+    <h3>📚 Votre Style d'Apprentissage</h3>
+    <div class="learning-styles">
+      <div class="learning-style-box">
+        <div class="learning-style-icon">👁️</div>
+        <div class="learning-style-name">Visuel</div>
+        <div class="learning-style-desc">Vous apprenez mieux avec des images, schémas et démonstrations visuelles</div>
+      </div>
+      <div class="learning-style-box">
+        <div class="learning-style-icon">👂</div>
+        <div class="learning-style-name">Auditif</div>
+        <div class="learning-style-desc">Vous préférez écouter, discuter et apprendre par la conversation</div>
+      </div>
+      <div class="learning-style-box">
+        <div class="learning-style-icon">✍️</div>
+        <div class="learning-style-name">Kinesthésique</div>
+        <div class="learning-style-desc">Vous apprenez en faisant, en pratiquant et en expérimentant</div>
+      </div>
+    </div>
+  </div>`;
+
+  // Section Résumé personnalité
+  analysisHtml += `<div class="analysis-section">
+    <h3>🎭 Profil de Personnalité</h3>
+    <div class="personality-summary">
+      <p>${profile.personality || 'Un profil unique et adaptable'}</p>
+      <div class="personality-traits">
+        <span class="trait">Adaptabilité</span>
+        <span class="trait">Apprentissage continu</span>
+        <span class="trait">Orientation résultats</span>
+        <span class="trait">Collaboration</span>
+      </div>
+    </div>
+  </div>`;
+
+  analysisHtml += `</div>`;
+
+  document.getElementById('analysis-tab').innerHTML = analysisHtml;
 };
 
 app.switchTab = function(tabName) {
