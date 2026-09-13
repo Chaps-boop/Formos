@@ -72,7 +72,14 @@ const app = {
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+  const screen = document.getElementById(screenId);
+  screen.classList.add('active');
+
+  // Force flex layout for journey screen
+  if (screenId === 'journey-screen') {
+    screen.style.display = 'flex';
+    screen.style.flexDirection = 'row';
+  }
 }
 
 function showWelcomeScreen() {

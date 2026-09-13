@@ -514,6 +514,12 @@ body {
     width: 100% !important;
     align-items: flex-start !important;
     box-sizing: border-box !important;
+    min-height: auto !important;
+}
+
+#journey-screen[data-layout="flex"] {
+    display: flex !important;
+    flex-direction: row !important;
 }
 
 .sidebar {
