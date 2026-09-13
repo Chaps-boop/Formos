@@ -79,11 +79,12 @@ function showScreen(screenId) {
   const screen = document.getElementById(screenId);
   screen.classList.add('active');
 
-  // Force display for all screens
+  // Set display for active screen
   if (screenId === 'journey-screen') {
-    screen.style.cssText = 'display: flex !important; flex-direction: row !important;';
+    screen.style.display = 'flex';
+    screen.style.flexDirection = 'row';
   } else {
-    screen.style.cssText = 'display: block !important;';
+    screen.style.display = 'block';
   }
 }
 
