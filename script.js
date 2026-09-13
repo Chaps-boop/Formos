@@ -381,9 +381,11 @@ app.renderSidebar = function() {
 };
 
 app.updateDailyChallenge = function() {
+  const challengeElement = document.getElementById('challenge-text');
+  if (!challengeElement) return;
   const today = new Date().getDate();
   const challengeIdx = today % this.data.challenges.length;
-  document.getElementById('challenge-text').textContent = this.data.challenges[challengeIdx];
+  challengeElement.textContent = this.data.challenges[challengeIdx];
 };
 
 app.nextStep = function() {
