@@ -687,41 +687,49 @@ app.generateResults = function() {
 
 app.selectBestRecommendations = function(profile) {
   const scored = this.data.recommendations.map(job => {
-    let score = job.compatibility || 70;
+    // Commencer avec score 0 - ignorer le score de compatibilité par défaut
+    // Cela force le matching basé sur les données réelles de l'utilisateur
+    let score = 0;
 
-    // Bonus si les valeurs correspondent (poids réduit)
+    // Valeurs: Bonus majeur si les valeurs correspondent
     if (job.values_match && profile.topValues.length > 0) {
       const valueMatches = profile.topValues.filter(v =>
         job.values_match.some(jv => v.toLowerCase().includes(jv.toLowerCase()))
       ).length;
-      score += (valueMatches * 4);
+      score += (valueMatches * 20); // Poids TRÈS important
+    } else {
+      score -= 15; // Pénalité si pas de match de valeurs
     }
 
-    // Bonus si les compétences correspondent (poids réduit)
+    // Compétences: Bonus si les compétences correspondent
     if (job.user_skills && profile.topStrengths.length > 0) {
       const skillMatches = profile.topStrengths.filter(s =>
         job.user_skills.some(js => s.toLowerCase().includes(js.toLowerCase()))
       ).length;
-      score += (skillMatches * 2);
+      score += (skillMatches * 15); // Poids très important
     }
 
-    // Bonus si le secteur correspond aux réponses
-    const responses = Object.values(this.userResponses).map(r => r.text || '').join(' ').toLowerCase();
+    // Secteur: Bonus modéré si le secteur correspond aux réponses
+    const responses = Object.values(this.userResponses).map(r => r.text || r.selectedOption || '').join(' ').toLowerCase();
     if (job.sector && responses.includes(job.sector.toLowerCase())) {
-      score += 8;
+      score += 10;
     }
 
-    // Pénalité pour les métiers trop génériques (coaching, consulting, etc.)
-    const genericTerms = ['coaching', 'consultant', 'mentor', 'formateur'];
+    // Pénalité FORTE pour les métiers trop génériques
+    const genericTerms = ['coaching', 'consultant', 'mentor', 'formateur', 'coach'];
     const isGeneric = genericTerms.some(term =>
       job.title.toLowerCase().includes(term)
     );
     if (isGeneric) {
-      score -= 5; // Réduire le score des métiers génériques
+      score -= 30; // Pénalité TRÈS élevée pour génériques
     }
 
-    // Réduire significativement l'aléatoire pour plus de cohérence
-    score += Math.random() * 2;
+    // Score de base très réduit (40 au lieu de 70-85)
+    // Cela assure que le matching est vraiment basé sur les données utilisateur
+    score += 40;
+
+    // Très peu d'aléatoire
+    score += Math.random() * 1;
 
     return { ...job, score };
   });
@@ -761,14 +769,26 @@ app.extractTopStrengths = function() {
   const strengths = [];
   Object.keys(this.userResponses).forEach(stepIdx => {
     const step = this.data.steps[stepIdx];
-    if (step.module === 'competencies') {
+    if (step && step.module === 'competencies') {
       const response = this.userResponses[stepIdx];
+      // Gérer les différents types de réponses
       if (response.text) {
         strengths.push(response.text);
+      } else if (response.selectedOption) {
+        strengths.push(response.selectedOption);
+      } else if (response.selected && Array.isArray(response.selected)) {
+        // Pour les checklist
+        response.selected.forEach(item => {
+          if (typeof item === 'string') {
+            strengths.push(item);
+          } else if (item.text) {
+            strengths.push(item.text);
+          }
+        });
       }
     }
   });
-  return strengths.slice(0, 5);
+  return strengths.slice(0, 8); // Augmenter de 5 à 8 pour plus de profondeur
 };
 
 app.extractTopValues = function() {
