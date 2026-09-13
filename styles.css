@@ -1066,46 +1066,19 @@ body {
     border-bottom: 2px solid var(--secondary);
 }
 
-/* Compétences */
-.skills-bars {
+/* Compétences - Radar Chart */
+.skills-chart-container {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.skill-item {
-    display: grid;
-    grid-template-columns: 150px 1fr 50px;
-    gap: 15px;
+    justify-content: center;
     align-items: center;
+    margin: 20px 0;
 }
 
-.skill-label {
-    font-weight: 600;
-    color: var(--text-dark);
-    font-size: 14px;
-}
-
-.skill-bar {
-    background: var(--bg-white);
-    border-radius: 20px;
-    height: 8px;
-    overflow: hidden;
-    border: 1px solid #e0e0e0;
-}
-
-.skill-fill {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    height: 100%;
-    border-radius: 20px;
-    transition: width 0.5s ease;
-}
-
-.skill-score {
-    font-weight: 700;
-    color: var(--primary);
-    text-align: right;
-    font-size: 13px;
+.skills-radar {
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
 }
 
 /* Valeurs */

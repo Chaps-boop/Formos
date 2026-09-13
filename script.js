@@ -802,6 +802,103 @@ app.getSkillTranslation = function(skillKey) {
   return skillTranslations[skillKey] || skillKey;
 };
 
+app.generateSkillsRadarChart = function(topSkills) {
+  if (!topSkills || topSkills.length === 0) return '';
+
+  const size = 400;
+  const center = size / 2;
+  const maxScore = 50;
+  const radius = 120;
+  const levels = 5;
+
+  // Créer les points du radar
+  const numSkills = topSkills.length;
+  const angleSlice = (Math.PI * 2) / numSkills;
+
+  // Générer les lignes de grille et les polygones
+  let gridLines = '';
+  for (let level = 1; level <= levels; level++) {
+    const r = (radius / levels) * level;
+    const points = [];
+    for (let i = 0; i < numSkills; i++) {
+      const angle = angleSlice * i - Math.PI / 2;
+      const x = center + r * Math.cos(angle);
+      const y = center + r * Math.sin(angle);
+      points.push(`${x},${y}`);
+    }
+    gridLines += `<polygon points="${points.join(' ')}" class="radar-grid" />`;
+
+    // Ajouter les labels de niveau
+    const angle = -Math.PI / 2;
+    const x = center + r * Math.cos(angle);
+    const y = center + r * Math.sin(angle) - 10;
+    gridLines += `<text x="${x}" y="${y}" class="radar-level">${Math.round((level / levels) * 100)}%</text>`;
+  }
+
+  // Générer les axes radiaux
+  let axes = '';
+  const skillLabels = [];
+  const dataPoints = [];
+
+  topSkills.forEach(([skill, score], i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const labelRadius = radius + 35;
+    const x = center + labelRadius * Math.cos(angle);
+    const y = center + labelRadius * Math.sin(angle);
+
+    const skillLabel = this.getSkillTranslation(skill);
+    skillLabels.push({ x, y, label: skillLabel });
+
+    // Ligne axe
+    const axisEndX = center + radius * Math.cos(angle);
+    const axisEndY = center + radius * Math.sin(angle);
+    axes += `<line x1="${center}" y1="${center}" x2="${axisEndX}" y2="${axisEndY}" class="radar-axis" />`;
+
+    // Calculer le point de données
+    const r = (score / maxScore) * radius;
+    const dataX = center + r * Math.cos(angle);
+    const dataY = center + r * Math.sin(angle);
+    dataPoints.push({ x: dataX, y: dataY, score: score });
+  });
+
+  // Créer le polygone de données
+  const dataPolygon = dataPoints.map(p => `${p.x},${p.y}`).join(' ');
+  let dataArea = `<polygon points="${dataPolygon}" class="radar-data" />`;
+
+  // Ajouter les points de données
+  dataPoints.forEach(point => {
+    dataArea += `<circle cx="${point.x}" cy="${point.y}" r="5" class="radar-point" />`;
+  });
+
+  // Ajouter les labels
+  let labels = '';
+  skillLabels.forEach(({ x, y, label }) => {
+    labels += `<text x="${x}" y="${y}" class="radar-label">${label}</text>`;
+  });
+
+  const svg = `
+    <svg class="skills-radar" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          .radar-grid { fill: none; stroke: #ddd; stroke-width: 1; }
+          .radar-axis { stroke: #ccc; stroke-width: 1; }
+          .radar-level { font-size: 12px; fill: #999; text-anchor: middle; }
+          .radar-label { font-size: 13px; font-weight: 600; text-anchor: middle; fill: var(--text-dark); }
+          .radar-data { fill: rgba(99, 102, 241, 0.25); stroke: var(--primary); stroke-width: 2; }
+          .radar-point { fill: var(--primary); }
+        </style>
+      </defs>
+
+      ${gridLines}
+      ${axes}
+      ${dataArea}
+      ${labels}
+    </svg>
+  `;
+
+  return svg;
+};
+
 app.extractPersonality = function() {
   // Analyser les réponses pour déterminer la personnalité
   const personalities = {
@@ -1141,25 +1238,15 @@ app.renderResults = function() {
   // Section Compétences
   analysisHtml += `<div class="analysis-section">
     <h3>💪 Vos Compétences Principales</h3>
-    <div class="skills-bars">`;
+    <div class="skills-chart-container">`;
 
   const topSkills = Object.entries(this.userScores || {})
     .sort((a, b) => b[1] - a[1])
     .slice(0, 8);
 
-  topSkills.forEach(([skill, score]) => {
-    const percentage = Math.min(100, Math.round((score / 50) * 100));
-    const skillLabel = this.getSkillTranslation(skill);
-    analysisHtml += `
-      <div class="skill-item">
-        <div class="skill-label">${skillLabel}</div>
-        <div class="skill-bar">
-          <div class="skill-fill" style="width: ${percentage}%"></div>
-        </div>
-        <div class="skill-score">${score}/50</div>
-      </div>
-    `;
-  });
+  // Générer le radar chart SVG
+  const radarSvg = this.generateSkillsRadarChart(topSkills);
+  analysisHtml += radarSvg;
 
   analysisHtml += `</div></div>`;
 
