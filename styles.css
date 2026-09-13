@@ -2628,6 +2628,13 @@ body {
         padding: 15px 12px;
     }
 
+    .results-grid {
+        padding: 15px;
+        box-shadow: none;
+        border: 2px solid var(--border-light);
+        border-radius: 8px;
+    }
+
     .celebration {
         text-align: center;
         margin-bottom: 20px;
@@ -2649,34 +2656,61 @@ body {
     }
 
     .tabs {
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 15px;
+        border-bottom: none;
+        overflow: visible;
     }
 
     .tab-btn {
-        flex: 1;
-        min-width: 70px;
-        font-size: 11px;
-        padding: 8px 6px;
+        padding: 12px 10px;
+        font-size: 12px;
+        font-weight: 600;
         border-radius: 6px;
+        border: 2px solid var(--border-light);
+        background: white;
+        color: var(--text-dark);
+        cursor: pointer;
+        white-space: normal;
+        text-align: center;
+        transition: all 0.2s ease;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .tab-btn:active {
+        transform: scale(0.98);
+    }
+
+    .tab-btn.active {
+        background: linear-gradient(135deg, var(--trail) 0%, var(--milestone) 100%);
+        color: white;
+        border-color: var(--trail);
     }
 
     .tab-content {
-        padding: 12px 0;
+        padding: 0;
     }
 
     .tab-pane {
-        padding: 12px 0;
+        padding: 15px 0;
     }
 
     .profile-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 12px;
     }
 
     .profile-grid .card {
-        padding: 12px;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid var(--border-light);
+        background: white;
     }
 
     .profile-grid h3 {
@@ -2688,21 +2722,39 @@ body {
     }
 
     .recommendations-list {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .recommendations-list .card {
-        padding: 12px;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid var(--border-light);
+        background: white;
     }
 
     .recommendations-list h3 {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        color: var(--text-dark);
+    }
+
+    .recommendations-list p {
         font-size: 13px;
+        line-height: 1.5;
+        margin: 8px 0;
+        color: var(--text-gray);
     }
 
     .recommendations-list .badge {
-        font-size: 11px;
-        padding: 4px 6px;
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 6px;
+        margin-bottom: 8px;
     }
 
     .action-plan {
