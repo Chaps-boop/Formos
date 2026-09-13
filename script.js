@@ -71,21 +71,8 @@ const app = {
 
 // ===== ÉCRANS PRINCIPAUX =====
 function showScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active');
-    s.style.display = 'none';
-  });
-
-  const screen = document.getElementById(screenId);
-  screen.classList.add('active');
-
-  // Set display for active screen
-  if (screenId === 'journey-screen') {
-    screen.style.display = 'flex';
-    screen.style.flexDirection = 'row';
-  } else {
-    screen.style.display = 'block';
-  }
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
 }
 
 function showWelcomeScreen() {

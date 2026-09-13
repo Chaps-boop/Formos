@@ -52,22 +52,34 @@ body {
 
 .screen {
     min-height: 100vh;
-    padding: 40px 20px;
     display: none;
-}
-
-.screen.active {
     animation: fadeIn 0.4s ease-in;
 }
 
+.screen.active {
+    display: block;
+}
+
+#welcome-screen {
+    padding: 40px 20px;
+}
+
+#onboarding-screen {
+    padding: 40px 20px;
+}
+
+#results-screen {
+    padding: 40px 20px;
+}
+
 #journey-screen {
-    display: flex !important;
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
 }
 
 #journey-screen.active {
-    display: flex !important;
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
 }
 
 @keyframes fadeIn {
@@ -509,35 +521,25 @@ body {
 
 /* PARCOURS */
 #journey-screen {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 20px !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    padding: 40px 20px !important;
-    width: 100% !important;
-    align-items: flex-start !important;
-    box-sizing: border-box !important;
-    min-height: auto !important;
-}
-
-#journey-screen[data-layout="flex"] {
-    display: flex !important;
-    flex-direction: row !important;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: start;
+    box-sizing: border-box;
 }
 
 .sidebar {
     background: var(--bg-white);
-    padding: 20px !important;
+    padding: 20px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    position: sticky !important;
-    top: 20px !important;
-    flex-shrink: 0 !important;
-    width: 300px !important;
-    min-width: 300px !important;
-    overflow: visible !important;
-    order: 1 !important;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
 }
 
 .sidebar-header {
@@ -617,15 +619,15 @@ body {
     margin-top: 20px;
     padding-top: 15px;
     border-top: 2px solid var(--border-light);
-    display: block !important;
-    visibility: visible !important;
-    overflow: visible !important;
-    width: 100% !important;
-    text-align: left !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 .modules-list h4 {
@@ -646,22 +648,22 @@ body {
 }
 
 .module-item {
-    padding: 12px 14px !important;
-    margin-bottom: 10px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    
+    
     border-radius: var(--radius-lg);
     background: var(--neutral);
     font-size: 13px;
     cursor: pointer;
     transition: all 0.3s ease;
     border-left: 4px solid var(--border-light);
-    display: flex !important;
+    display: flex;
     align-items: center;
     gap: 10px;
     position: relative;
-    width: 100% !important;
-    text-align: left !important;
+    
+    
 }
 
 .module-icon {
@@ -683,13 +685,13 @@ body {
 }
 
 #modules-nav {
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: left !important;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    
+    
 }
 
 .module-item:hover {
@@ -725,12 +727,9 @@ body {
 }
 
 .main-content {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 30px !important;
-    flex: 1 !important;
-    min-width: 0 !important;
-    order: 2 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .step-container {
@@ -1707,13 +1706,12 @@ body {
 /* RESPONSIVE */
 @media (max-width: 768px) {
     #journey-screen {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
     .sidebar {
         position: relative;
         top: 0;
-        width: 100%;
     }
 
     #welcome-screen h1 {
