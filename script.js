@@ -50,6 +50,7 @@ const app = {
   setupEventListeners: function() {
     document.getElementById('start-btn').addEventListener('click', () => this.startJourney());
     document.getElementById('continue-btn').addEventListener('click', () => this.continueJourney());
+    document.getElementById('test-btn').addEventListener('click', () => this.autoFillAnswers());
 
     document.getElementById('onboarding-next').addEventListener('click', () => this.nextOnboarding());
     document.getElementById('onboarding-prev').addEventListener('click', () => this.prevOnboarding());
@@ -88,6 +89,67 @@ app.startJourney = function() {
   this.currentStep = 0;
   this.renderOnboarding();
   showScreen('onboarding-screen');
+};
+
+app.autoFillAnswers = function() {
+  console.log('🧪 Démarrage du remplissage automatique...');
+
+  // Profil de test
+  this.currentOnboardingStep = 0;
+  this.userProfile = {
+    name: 'Test Utilisateur',
+    situation: 'Salarié en reconversion',
+    years_experience: '5-10 ans',
+    sector: 'Technologie',
+    motivation: 'Développement personnel',
+    constraints: 'Aucune'
+  };
+
+  this.userResponses = {};
+  this.userScores = {};
+  this.currentStep = 0;
+
+  // Remplir toutes les étapes automatiquement
+  for (let i = 0; i < this.data.steps.length; i++) {
+    const step = this.data.steps[i];
+
+    if (step.type === 'reflection' || step.type === 'ranking') {
+      this.userResponses[i] = {
+        type: step.type,
+        text: `Réponse test pour l'étape ${i + 1}: ${step.title}`
+      };
+    } else if (step.type === 'quiz') {
+      const randomIdx = Math.floor(Math.random() * step.options.length);
+      const option = step.options[randomIdx];
+      this.userResponses[i] = {
+        type: 'quiz',
+        selectedIdx: randomIdx,
+        selectedOption: option.text,
+        scores: option.score || {}
+      };
+      // Appliquer les scores
+      Object.keys(option.score || {}).forEach(key => {
+        this.userScores[key] = (this.userScores[key] || 0) + option.score[key];
+      });
+    } else if (step.type === 'slider') {
+      const randomIdx = Math.floor(Math.random() * step.scale.length);
+      this.userResponses[i] = {
+        type: 'slider',
+        selectedIdx: randomIdx,
+        selectedLabel: step.scale[randomIdx]
+      };
+    } else if (step.type === 'checklist') {
+      const selected = step.options.slice(0, Math.floor(step.options.length / 2));
+      this.userResponses[i] = {
+        type: 'checklist',
+        selected: selected
+      };
+    }
+  }
+
+  console.log('✅ Remplissage automatique complété');
+  this.currentStep = this.data.steps.length;
+  this.showResults();
 };
 
 app.continueJourney = function() {
@@ -390,6 +452,12 @@ app.updateDailyChallenge = function() {
 
 app.nextStep = function() {
   const step = this.data.steps[this.currentStep];
+
+  // Si on est au-delà de la dernière étape, afficher les résultats
+  if (!step) {
+    this.showResults();
+    return;
+  }
 
   // Capturer la réponse
   if (step.type === 'reflection' || step.type === 'ranking') {
