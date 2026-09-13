@@ -352,14 +352,24 @@ app.renderStep = function() {
   }
 
   // Insérer le contenu d'abord
-  document.getElementById('step-content').innerHTML = content;
+  const stepContent = document.getElementById('step-content');
+  if (!stepContent) {
+    console.error('❌ Erreur: step-content non trouvé');
+    return;
+  }
+  stepContent.innerHTML = content;
 
   // Puis pré-remplir si réponse existante
   if (this.userResponses[this.currentStep]) {
     const response = this.userResponses[this.currentStep];
     if (step.type === 'reflection' || step.type === 'ranking') {
-      const textarea = document.getElementById('step-answer');
-      if (textarea) textarea.value = response.text || '';
+      // Attendre que le DOM soit mis à jour
+      setTimeout(() => {
+        const textarea = document.getElementById('step-answer');
+        if (textarea && response.text) {
+          textarea.value = response.text;
+        }
+      }, 0);
     }
   }
 };
