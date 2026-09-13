@@ -309,11 +309,30 @@ app.getModuleIllustration = function(moduleId) {
 };
 
 app.renderStep = function() {
-  const step = this.data.steps[this.currentStep];
-  const module = this.data.modules.find(m => m.id === step.module);
+  console.log('renderStep called, currentStep:', this.currentStep);
 
-  document.getElementById('step-number').textContent = `Étape ${this.currentStep + 1}`;
-  document.getElementById('step-module').textContent = module.name;
+  const step = this.data.steps[this.currentStep];
+  if (!step) {
+    console.error('❌ Step not found at index', this.currentStep);
+    return;
+  }
+
+  const module = this.data.modules.find(m => m.id === step.module);
+  if (!module) {
+    console.error('❌ Module not found for step', step);
+    return;
+  }
+
+  const stepNumberEl = document.getElementById('step-number');
+  const stepModuleEl = document.getElementById('step-module');
+
+  if (!stepNumberEl || !stepModuleEl) {
+    console.error('❌ step-number or step-module element not found');
+    return;
+  }
+
+  stepNumberEl.textContent = `Étape ${this.currentStep + 1}`;
+  stepModuleEl.textContent = module.name;
 
   let content = `<div class="step-header-section">
     ${this.getModuleIllustration(module.id)}
@@ -352,7 +371,15 @@ app.renderStep = function() {
   }
 
   // Insérer le contenu dans le DOM
-  document.getElementById('step-content').innerHTML = content;
+  const stepContentEl = document.getElementById('step-content');
+  if (!stepContentEl) {
+    console.error('❌ step-content element not found!');
+    return;
+  }
+
+  console.log('✅ Inserting content for step:', step.title);
+  stepContentEl.innerHTML = content;
+  console.log('✅ Content inserted, innerHTML length:', stepContentEl.innerHTML.length);
 
   // Pré-remplir les réponses existantes
   if (this.userResponses[this.currentStep]) {
