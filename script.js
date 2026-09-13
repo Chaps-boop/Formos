@@ -136,8 +136,10 @@ app.startJourney = function() {
 };
 
 app.autoFillAnswers = function() {
+  console.log('🧪 autoFillAnswers called - entering test mode');
   // Profil de test
   this.isTestMode = true;
+  console.log('isTestMode set to:', this.isTestMode);
   this.currentOnboardingStep = 0;
   this.userProfile = {
     name: 'Test Utilisateur',
@@ -308,23 +310,34 @@ app.renderJourneyScreen = function() {
 };
 
 app.updateTestModeButton = function() {
+  console.log('updateTestModeButton called - isTestMode:', this.isTestMode, 'currentStep:', this.currentStep);
+
   const stepActions = document.querySelector('.step-actions');
-  if (!stepActions) return;
+  if (!stepActions) {
+    console.log('❌ .step-actions element not found!');
+    return;
+  }
 
   // Chercher ou créer le bouton de test
   let testBtn = document.getElementById('goto-step99-btn');
 
   if (this.isTestMode && this.currentStep < 99) {
+    console.log('✅ Should show test button');
     if (!testBtn) {
+      console.log('Creating new test button');
       testBtn = document.createElement('button');
       testBtn.id = 'goto-step99-btn';
       testBtn.className = 'btn btn-outline';
       testBtn.textContent = '⚡ Aller à la question 99';
       testBtn.onclick = () => this.goToStep99();
       stepActions.appendChild(testBtn);
+      console.log('✅ Test button added to DOM');
     }
   } else if (testBtn) {
+    console.log('Removing test button');
     testBtn.remove();
+  } else {
+    console.log('Test button should not be shown');
   }
 };
 
