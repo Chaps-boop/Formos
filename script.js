@@ -293,12 +293,32 @@ app.renderSidebar = function() {
   document.getElementById('current-step').textContent = this.currentStep;
   document.getElementById('total-steps').textContent = this.data.steps.length;
 
-  // Modules
+  // Modules - Determiner les modules complétés et actifs
   const modulesNav = document.getElementById('modules-nav');
   let modulesHtml = '';
+
   this.data.modules.forEach(module => {
-    const isActive = this.data.steps[this.currentStep]?.module === module.id ? 'active' : '';
-    modulesHtml += `<div class="module-item ${isActive}">${module.icon} ${module.name}</div>`;
+    const currentModuleId = this.data.steps[this.currentStep]?.module;
+    const isActive = currentModuleId === module.id;
+
+    // Vérifier si le module est complété (toutes ses étapes sont passées)
+    const moduleSteps = module.steps;
+    const maxStepInModule = Math.max(...moduleSteps);
+    const isCompleted = this.currentStep > maxStepInModule;
+
+    let status = '';
+    if (isCompleted) {
+      status = 'completed';
+    } else if (isActive) {
+      status = 'active';
+    }
+
+    const checkmark = isCompleted ? '✓' : '';
+    modulesHtml += `<div class="module-item module-${status}" data-module="${module.id}">
+      <span class="module-icon">${module.icon}</span>
+      <span class="module-name">${module.name}</span>
+      ${checkmark ? `<span class="module-checkmark">${checkmark}</span>` : ''}
+    </div>`;
   });
   modulesNav.innerHTML = modulesHtml;
 };
