@@ -728,14 +728,63 @@ app.extractTopValues = function() {
   const values = [];
   Object.keys(this.userResponses).forEach(stepIdx => {
     const step = this.data.steps[stepIdx];
-    if (step.module === 'values') {
+    if (step && step.module === 'values') {
       const response = this.userResponses[stepIdx];
+      // Gérer les deux types de réponses: reflection (text) et quiz (selectedOption)
       if (response.text) {
         values.push(response.text);
+      } else if (response.selectedOption) {
+        values.push(response.selectedOption);
       }
     }
   });
   return values.slice(0, 5);
+};
+
+app.getSkillTranslation = function(skillKey) {
+  const skillTranslations = {
+    'leadership': 'Leadership',
+    'creativity': 'Créativité',
+    'analytical': 'Analyse',
+    'communication': 'Communication',
+    'technical': 'Techniques',
+    'empathy': 'Empathie',
+    'organization': 'Organisation',
+    'practical': 'Pragmatisme',
+    'theoretical': 'Pensée théorique',
+    'social': 'Compétences sociales',
+    'solitary': 'Travail indépendant',
+    'collaborative': 'Collaboration',
+    'observational': 'Observation',
+    'optimistic': 'Optimisme',
+    'realistic': 'Réalisme',
+    'ambition': 'Ambition',
+    'authenticity': 'Authenticité',
+    'confidence': 'Confiance',
+    'autonomy_need': 'Besoin d\'autonomie',
+    'collaboration_need': 'Besoin de collaboration',
+    'growth_need': 'Soif d\'apprentissage',
+    'purpose_need': 'Besoin de sens',
+    'network_strength': 'Force du réseau',
+    'business': 'Sens des affaires',
+    'environment': 'Sensibilité environnementale',
+    'mobile': 'Mobilité',
+    'leader': 'Capacité de direction',
+    'cautious': 'Prudence',
+    'confrontational': 'Assertivité',
+    'avoidant': 'Évitement',
+    'ethics_priority': 'Éthique',
+    'self_awareness': 'Conscience de soi',
+    'learning_style': 'Style d\'apprentissage',
+    'conflict_style': 'Style de gestion de conflits',
+    'current_alignment': 'Alignement actuel',
+    'personality': 'Personnalité',
+    'outlook': 'Perspective',
+    'readiness': 'Préparation',
+    'transferability': 'Transférabilité'
+  };
+
+  return skillTranslations[skillKey] || skillKey;
 };
 
 app.extractPersonality = function() {
@@ -1085,9 +1134,10 @@ app.renderResults = function() {
 
   topSkills.forEach(([skill, score]) => {
     const percentage = Math.min(100, Math.round((score / 50) * 100));
+    const skillLabel = this.getSkillTranslation(skill);
     analysisHtml += `
       <div class="skill-item">
-        <div class="skill-label">${skill}</div>
+        <div class="skill-label">${skillLabel}</div>
         <div class="skill-bar">
           <div class="skill-fill" style="width: ${percentage}%"></div>
         </div>
