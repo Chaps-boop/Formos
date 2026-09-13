@@ -7,9 +7,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
-  id-token: write
 
 jobs:
   deploy:
@@ -33,14 +32,12 @@ jobs:
           test -f script.js && echo "✓ script.js trouvé"
           test -f data.json && echo "✓ data.json trouvé"
 
-      - name: 📦 Setup Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
       - name: 🌐 Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          cname: false
 
       - name: ✨ Deployment Success
         run: |
