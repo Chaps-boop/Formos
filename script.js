@@ -154,14 +154,26 @@ app.autoFillAnswers = function() {
   this.userScores = {};
   this.currentStep = 0;
 
-  // Remplir toutes les étapes automatiquement
+  // Remplir toutes les étapes automatiquement avec réponses aléatoires
+  const reflectionTexts = [
+    'Cela me passionne vraiment',
+    'C\'est très important pour moi',
+    'Je vois un grand potentiel ici',
+    'Cela correspond à mes valeurs',
+    'Je peux vraiment faire la différence',
+    'C\'est un défi stimulant',
+    'Cela me permet de grandir',
+    'Je me sens capable et motivé'
+  ];
+
   for (let i = 0; i < this.data.steps.length; i++) {
     const step = this.data.steps[i];
 
     if (step.type === 'reflection' || step.type === 'ranking') {
+      const randomText = reflectionTexts[Math.floor(Math.random() * reflectionTexts.length)];
       this.userResponses[i] = {
         type: step.type,
-        text: `Réponse test pour l'étape ${i + 1}: ${step.title}`
+        text: randomText
       };
     } else if (step.type === 'quiz') {
       const randomIdx = Math.floor(Math.random() * step.options.length);
@@ -183,7 +195,10 @@ app.autoFillAnswers = function() {
         selectedLabel: step.scale[randomIdx]
       };
     } else if (step.type === 'checklist') {
-      const selected = step.options.slice(0, Math.floor(step.options.length / 2));
+      // Sélectionner un nombre aléatoire d'options (entre 1 et toutes)
+      const numToSelect = Math.floor(Math.random() * step.options.length) + 1;
+      const shuffled = [...step.options].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, numToSelect);
       this.userResponses[i] = {
         type: 'checklist',
         selected: selected
