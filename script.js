@@ -97,8 +97,12 @@ app.continueJourney = function() {
   this.userResponses = saved.userResponses;
   this.userScores = saved.userScores;
 
-  this.renderJourneyScreen();
-  showScreen('journey-screen');
+  if (this.currentStep >= this.data.steps.length) {
+    this.showResults();
+  } else {
+    this.renderJourneyScreen();
+    showScreen('journey-screen');
+  }
 };
 
 // ===== ONBOARDING =====
