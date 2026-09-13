@@ -351,15 +351,17 @@ app.renderStep = function() {
     content += `<textarea id="step-answer" class="step-input" placeholder="Classez les éléments par ordre d'importance" rows="6"></textarea>`;
   }
 
-  // Pré-remplir si réponse existante
+  // Insérer le contenu d'abord
+  document.getElementById('step-content').innerHTML = content;
+
+  // Puis pré-remplir si réponse existante
   if (this.userResponses[this.currentStep]) {
     const response = this.userResponses[this.currentStep];
     if (step.type === 'reflection' || step.type === 'ranking') {
-      document.getElementById('step-answer').value = response.text || '';
+      const textarea = document.getElementById('step-answer');
+      if (textarea) textarea.value = response.text || '';
     }
   }
-
-  document.getElementById('step-content').innerHTML = content;
 };
 
 window.selectQuizOption = function(idx) {
