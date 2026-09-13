@@ -1021,6 +1021,88 @@ app.renderResults = function() {
   actionHtml += `</div>`;
 
   document.getElementById('action-plan').innerHTML = actionHtml;
+
+  // Onglet analyse complète
+  let analysisHtml = `<div class="analysis-container">
+    <div class="analysis-header">
+      <h2>📊 Analyse Complète de Votre Profil</h2>
+      <p>Détail de vos compétences, valeurs et styles d'apprentissage</p>
+    </div>`;
+
+  // Section Compétences
+  analysisHtml += `<div class="analysis-section">
+    <h3>💪 Vos Compétences Principales</h3>
+    <div class="skills-bars">`;
+
+  const topSkills = Object.entries(this.userScores || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+
+  topSkills.forEach(([skill, score]) => {
+    const percentage = Math.min(100, Math.round((score / 50) * 100));
+    analysisHtml += `
+      <div class="skill-item">
+        <div class="skill-label">${skill}</div>
+        <div class="skill-bar">
+          <div class="skill-fill" style="width: ${percentage}%"></div>
+        </div>
+        <div class="skill-score">${score}/50</div>
+      </div>
+    `;
+  });
+
+  analysisHtml += `</div></div>`;
+
+  // Section Valeurs
+  analysisHtml += `<div class="analysis-section">
+    <h3>✨ Vos Valeurs Clés</h3>
+    <div class="values-list">`;
+
+  (profile.topValues || []).forEach(value => {
+    analysisHtml += `<div class="value-badge">${value}</div>`;
+  });
+
+  analysisHtml += `</div></div>`;
+
+  // Section Style d'apprentissage
+  analysisHtml += `<div class="analysis-section">
+    <h3>📚 Votre Style d'Apprentissage</h3>
+    <div class="learning-styles">
+      <div class="learning-style-box">
+        <div class="learning-style-icon">👁️</div>
+        <div class="learning-style-name">Visuel</div>
+        <div class="learning-style-desc">Vous apprenez mieux avec des images, schémas et démonstrations visuelles</div>
+      </div>
+      <div class="learning-style-box">
+        <div class="learning-style-icon">👂</div>
+        <div class="learning-style-name">Auditif</div>
+        <div class="learning-style-desc">Vous préférez écouter, discuter et apprendre par la conversation</div>
+      </div>
+      <div class="learning-style-box">
+        <div class="learning-style-icon">✍️</div>
+        <div class="learning-style-name">Kinesthésique</div>
+        <div class="learning-style-desc">Vous apprenez en faisant, en pratiquant et en expérimentant</div>
+      </div>
+    </div>
+  </div>`;
+
+  // Section Résumé personnalité
+  analysisHtml += `<div class="analysis-section">
+    <h3>🎭 Profil de Personnalité</h3>
+    <div class="personality-summary">
+      <p>${profile.personality || 'Un profil unique et adaptable'}</p>
+      <div class="personality-traits">
+        <span class="trait">Adaptabilité</span>
+        <span class="trait">Apprentissage continu</span>
+        <span class="trait">Orientation résultats</span>
+        <span class="trait">Collaboration</span>
+      </div>
+    </div>
+  </div>`;
+
+  analysisHtml += `</div>`;
+
+  document.getElementById('analysis-tab').innerHTML = analysisHtml;
 };
 
 app.switchTab = function(tabName) {
