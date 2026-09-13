@@ -9,9 +9,19 @@ const app = {
   savedState: null,
 
   init: async function() {
+    console.log('🔧 APP INIT STARTING - Version with screen visibility fixes');
+    console.log('📍 Screen elements in DOM:', {
+      welcome: !!document.getElementById('welcome-screen'),
+      onboarding: !!document.getElementById('onboarding-screen'),
+      journey: !!document.getElementById('journey-screen'),
+      results: !!document.getElementById('results-screen')
+    });
+
     await this.loadData();
     this.checkSavedState();
     this.setupEventListeners();
+
+    console.log('✅ APP INIT COMPLETE - Ready for user interaction');
     showWelcomeScreen();
   },
 
