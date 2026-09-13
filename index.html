@@ -11,7 +11,48 @@
     <section id="welcome-screen" class="screen">
         <div class="welcome-container">
             <div class="logo-welcome">
-                <div class="avatar-welcome">⛰️</div>
+                <svg class="mountain-illustration" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Ciel -->
+                    <defs>
+                        <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#e0e7ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#f0f4ff;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2c5282;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a365d;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="peakGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#c9934f;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#a67c52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Arrière-plan ciel -->
+                    <rect width="200" height="180" fill="url(#skyGradient)"/>
+
+                    <!-- Montagne principale (gauche) -->
+                    <polygon points="20,140 80,40 140,140" fill="url(#mountainGradient)" opacity="0.8"/>
+
+                    <!-- Montagne (centre-droit) -->
+                    <polygon points="100,160 140,60 180,160" fill="url(#mountainGradient)" opacity="0.9"/>
+
+                    <!-- Sommet principal doré -->
+                    <polygon points="140,60 155,40 165,65" fill="url(#peakGradient)"/>
+
+                    <!-- Chemin de progression (ligne pointillée) -->
+                    <path d="M 80 40 Q 110 35 140 60" stroke="#d4a574" stroke-width="2" fill="none" stroke-dasharray="4,4" opacity="0.7"/>
+
+                    <!-- Étapes du chemin -->
+                    <circle cx="80" cy="40" r="3" fill="#c9934f"/>
+                    <circle cx="100" cy="36" r="2.5" fill="#c9934f" opacity="0.6"/>
+                    <circle cx="120" cy="45" r="2.5" fill="#c9934f" opacity="0.6"/>
+                    <circle cx="140" cy="60" r="3" fill="#c9934f"/>
+
+                    <!-- Nuages decoratifs -->
+                    <ellipse cx="50" cy="20" rx="20" ry="12" fill="white" opacity="0.3"/>
+                    <ellipse cx="170" cy="30" rx="18" ry="10" fill="white" opacity="0.2"/>
+                </svg>
             </div>
             <h1>Cent pas vers un autre avenir</h1>
             <p class="tagline">Découvrez vos talents, explorez vos possibilités, tracez votre chemin</p>
@@ -38,6 +79,32 @@
         <div class="container">
             <div class="progress-header">
                 <div class="progress-info">
+                    <svg class="thinking-illustration" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="personGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#2c5282;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#1a365d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Tête -->
+                        <circle cx="60" cy="35" r="18" fill="url(#personGradient)"/>
+                        <!-- Ampoule (idée) -->
+                        <circle cx="85" cy="15" r="8" fill="#c9934f" opacity="0.8"/>
+                        <rect x="82" y="23" width="6" height="8" fill="#c9934f" opacity="0.8"/>
+                        <!-- Corps -->
+                        <ellipse cx="60" cy="70" rx="15" ry="20" fill="url(#personGradient)"/>
+                        <!-- Bras gauche -->
+                        <line x1="50" y1="60" x2="35" y2="75" stroke="url(#personGradient)" stroke-width="6" stroke-linecap="round"/>
+                        <!-- Bras droit (pointant vers ampoule) -->
+                        <line x1="70" y1="60" x2="82" y2="30" stroke="url(#personGradient)" stroke-width="6" stroke-linecap="round"/>
+                        <!-- Jambes -->
+                        <line x1="55" y1="88" x2="50" y2="110" stroke="url(#personGradient)" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="65" y1="88" x2="70" y2="110" stroke="url(#personGradient)" stroke-width="5" stroke-linecap="round"/>
+                        <!-- Points de réflexion -->
+                        <circle cx="20" cy="45" r="2" fill="#c9934f" opacity="0.6"/>
+                        <circle cx="15" cy="60" r="1.5" fill="#c9934f" opacity="0.5"/>
+                        <circle cx="22" cy="70" r="1.5" fill="#c9934f" opacity="0.5"/>
+                    </svg>
                     <h2>Avant de commencer...</h2>
                     <p>Parlons-nous un peu pour personnaliser votre parcours</p>
                 </div>
@@ -61,6 +128,24 @@
     <section id="journey-screen" class="screen" style="display:none;">
         <aside class="sidebar">
             <div class="sidebar-header">
+                <svg class="sidebar-illustration" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2c5282;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1e5631;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Sentier -->
+                    <path d="M 10 70 Q 20 60 30 45 Q 40 30 50 20 Q 60 10 70 5" stroke="url(#pathGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- Étapes du sentier -->
+                    <circle cx="10" cy="70" r="3" fill="#1e5631"/>
+                    <circle cx="30" cy="45" r="3" fill="#2c5282" opacity="0.7"/>
+                    <circle cx="50" cy="20" r="3" fill="#2c5282" opacity="0.7"/>
+                    <circle cx="70" cy="5" r="4" fill="#c9934f"/>
+                    <!-- Drapeau au sommet -->
+                    <rect x="68" y="2" width="2" height="8" fill="#c9934f"/>
+                    <polygon points="70,2 70,6 73,4" fill="#c9934f"/>
+                </svg>
                 <h3>Votre profil</h3>
             </div>
             <div class="profile-summary" id="profile-summary">
@@ -110,6 +195,34 @@
     <section id="results-screen" class="screen" style="display:none;">
         <div class="container">
             <div class="celebration">
+                <svg class="achievement-illustration" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="trophyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#c9934f;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#a67c52;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e5631;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#2c5282;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Couronne de laurier -->
+                    <path d="M 50 40 Q 40 50 45 70 Q 50 85 70 85 Q 90 85 95 70 Q 100 50 90 40" stroke="url(#starGradient)" stroke-width="2" fill="none" opacity="0.8"/>
+                    <!-- Trophée -->
+                    <ellipse cx="100" cy="60" rx="20" ry="25" fill="url(#trophyGradient)"/>
+                    <rect x="85" y="80" width="30" height="8" fill="url(#trophyGradient)" rx="2"/>
+                    <rect x="88" y="85" width="24" height="4" fill="url(#trophyGradient)"/>
+                    <!-- Base du trophée -->
+                    <ellipse cx="100" cy="90" rx="18" ry="4" fill="url(#trophyGradient)" opacity="0.9"/>
+                    <!-- Anses -->
+                    <path d="M 82 65 Q 70 60 68 75" stroke="url(#trophyGradient)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <path d="M 118 65 Q 130 60 132 75" stroke="url(#trophyGradient)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <!-- Étoiles -->
+                    <circle cx="60" cy="30" r="8" fill="#c9934f" opacity="0.8"/>
+                    <circle cx="140" cy="35" r="6" fill="#c9934f" opacity="0.6"/>
+                    <circle cx="65" cy="110" r="5" fill="#1e5631" opacity="0.6"/>
+                    <circle cx="135" cy="115" r="7" fill="#1e5631" opacity="0.7"/>
+                </svg>
                 <div class="confetti" id="confetti"></div>
                 <h1>🎉 Bravo ! Vous avez complété votre bilan de compétences</h1>
                 <p>Vous avez parcouru les 100 étapes. Voici vos résultats personnalisés.</p>

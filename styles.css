@@ -109,6 +109,48 @@ body {
     margin-bottom: 40px;
 }
 
+.mountain-illustration {
+    width: 240px;
+    height: 200px;
+    animation: float 5s ease-in-out infinite;
+    filter: drop-shadow(0 12px 30px rgba(26, 54, 93, 0.2));
+    display: inline-block;
+}
+
+.thinking-illustration {
+    width: 100px;
+    height: 100px;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 8px 20px rgba(26, 54, 93, 0.15));
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: middle;
+}
+
+.sidebar-illustration {
+    width: 50px;
+    height: 50px;
+    animation: float 6s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(13, 31, 45, 0.1));
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.achievement-illustration {
+    width: 200px;
+    height: 200px;
+    animation: bounce 1s ease-in-out infinite;
+    filter: drop-shadow(0 16px 40px rgba(26, 54, 93, 0.2));
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
 .avatar-welcome {
     font-size: 120px;
     animation: float 4s ease-in-out infinite;
@@ -327,9 +369,20 @@ body {
     margin-bottom: 40px;
 }
 
+.progress-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 30px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(44, 82, 130, 0.05), rgba(30, 86, 49, 0.05));
+    border-radius: var(--radius-lg);
+}
+
 .progress-header h2 {
     font-size: 32px;
     margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .progress-header p {
@@ -464,10 +517,18 @@ body {
     top: 30px;
 }
 
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
 .sidebar-header h3 {
     font-size: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     color: var(--primary);
+    font-weight: 700;
 }
 
 .sidebar .profile-summary {
@@ -795,16 +856,26 @@ body {
     color: white;
     border-radius: var(--radius-lg);
     margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.celebration svg {
+    max-width: 100%;
+    height: auto;
 }
 
 .celebration h1 {
     font-size: 48px;
     margin-bottom: 15px;
+    font-weight: 800;
 }
 
 .celebration p {
     font-size: 18px;
     opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .results-grid {
