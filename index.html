@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cent pas vers un autre avenir</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Écran de splash / Accueil -->
+    <section id="welcome-screen" class="screen">
+        <div class="welcome-container">
+            <div class="logo-welcome">
+                <div class="avatar-welcome">🚀</div>
+            </div>
+            <h1>Cent pas vers un autre avenir</h1>
+            <p class="tagline">Découvrez vos talents, explorez vos possibilités, tracez votre chemin</p>
+
+            <div class="welcome-content">
+                <h2>Bienvenue dans votre voyage de réorientation</h2>
+                <p>En 100 étapes ludiques et personnalisées, nous allons ensemble :</p>
+                <ul class="features-list">
+                    <li>🧩 Comprendre vos vraies compétences et talents cachés</li>
+                    <li>💡 Découvrir vos valeurs et ce qui vous motive vraiment</li>
+                    <li>🎯 Explorer des pistes de reconversion alignées avec votre personnalité</li>
+                    <li>📋 Créer un plan d'action concret et motivant</li>
+                </ul>
+                <p class="info-text">Chaque étape prend 2-3 minutes. Vous pouvez faire une pause et reprendre quand bon vous semble.</p>
+            </div>
+
+            <button class="btn btn-primary" id="start-btn">Commencer mon parcours</button>
+            <button class="btn btn-secondary" id="continue-btn" style="display:none;">Continuer mon parcours</button>
+        </div>
+    </section>
+
+    <!-- Écran de profilage initial -->
+    <section id="onboarding-screen" class="screen" style="display:none;">
+        <div class="container">
+            <div class="progress-header">
+                <div class="progress-info">
+                    <h2>Avant de commencer...</h2>
+                    <p>Parlons-nous un peu pour personnaliser votre parcours</p>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="onboarding-progress"></div>
+                </div>
+            </div>
+
+            <div class="onboarding-form" id="onboarding-form">
+                <!-- Questions de profilage -->
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-secondary" id="onboarding-prev">Précédent</button>
+                <button class="btn btn-primary" id="onboarding-next">Suivant</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Écran principal du parcours -->
+    <section id="journey-screen" class="screen" style="display:none;">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Votre profil</h3>
+            </div>
+            <div class="profile-summary" id="profile-summary">
+                <!-- Résumé du profil -->
+            </div>
+            <div class="stats-card">
+                <h4>Progression</h4>
+                <div class="big-number" id="big-progress">0%</div>
+                <div class="stat-line">
+                    <span id="current-step">0</span> / <span id="total-steps">100</span> étapes
+                </div>
+            </div>
+            <div class="modules-list">
+                <h4>Modules</h4>
+                <div id="modules-nav"></div>
+            </div>
+            <button class="btn btn-secondary btn-block" id="save-btn">💾 Sauvegarder</button>
+            <button class="btn btn-outline btn-block" id="export-btn" style="display:none;">📊 Exporter mon bilan</button>
+        </aside>
+
+        <main class="main-content">
+            <div class="step-container">
+                <div class="step-header">
+                    <div class="step-number" id="step-number">Étape 1</div>
+                    <div class="step-module" id="step-module"></div>
+                </div>
+
+                <div class="step-content" id="step-content">
+                    <!-- Contenu de l'étape -->
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" id="prev-step">← Précédent</button>
+                    <button class="btn btn-primary" id="next-step">Suivant →</button>
+                </div>
+            </div>
+
+            <div class="daily-challenge" id="daily-challenge">
+                <div class="challenge-badge">🎯</div>
+                <h3>Défi du jour</h3>
+                <p id="challenge-text"></p>
+            </div>
+        </main>
+    </section>
+
+    <!-- Écran des résultats finaux -->
+    <section id="results-screen" class="screen" style="display:none;">
+        <div class="container">
+            <div class="celebration">
+                <div class="confetti" id="confetti"></div>
+                <h1>🎉 Bravo ! Vous avez complété votre bilan de compétences</h1>
+                <p>Vous avez parcouru les 100 étapes. Voici vos résultats personnalisés.</p>
+            </div>
+
+            <div class="results-grid">
+                <!-- Onglets de résultats -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="profile">Votre Profil</button>
+                    <button class="tab-btn" data-tab="recommendations">Recommandations</button>
+                    <button class="tab-btn" data-tab="action-plan">Plan d'Action</button>
+                    <button class="tab-btn" data-tab="analysis">Analyse Complète</button>
+                </div>
+
+                <div class="tab-content">
+                    <!-- Profil -->
+                    <div id="profile-tab" class="tab-pane active">
+                        <div class="profile-grid" id="profile-grid"></div>
+                    </div>
+
+                    <!-- Recommandations -->
+                    <div id="recommendations-tab" class="tab-pane">
+                        <div class="recommendations-list" id="recommendations-list"></div>
+                    </div>
+
+                    <!-- Plan d'action -->
+                    <div id="action-plan-tab" class="tab-pane">
+                        <div class="action-plan" id="action-plan"></div>
+                    </div>
+
+                    <!-- Analyse -->
+                    <div id="analysis-tab" class="tab-pane">
+                        <div class="charts-container">
+                            <canvas id="chart-competencies" class="chart"></canvas>
+                            <canvas id="chart-values" class="chart"></canvas>
+                            <canvas id="chart-learning-style" class="chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="export-pdf">📥 Télécharger mon bilan PDF</button>
+                <button class="btn btn-secondary" id="share-btn">📤 Partager mon résultat</button>
+                <button class="btn btn-outline" id="restart-btn">🔄 Recommencer</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de sauvegarde -->
+    <div id="save-modal" class="modal">
+        <div class="modal-content">
+            <h3>Votre parcours a été sauvegardé</h3>
+            <p id="save-message"></p>
+            <button class="btn btn-primary" onclick="closeSaveModal()">Continuer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

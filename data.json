@@ -1,0 +1,1177 @@
+{
+  "modules": [
+    {
+      "id": "profiling",
+      "name": "Qui suis-je vraiment ?",
+      "icon": "🔍",
+      "description": "Découvrez votre vrai profil",
+      "color": "#6366f1",
+      "steps": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    },
+    {
+      "id": "competencies",
+      "name": "Mes compétences",
+      "icon": "💪",
+      "description": "Révélez vos talents cachés",
+      "color": "#ec4899",
+      "steps": [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+    },
+    {
+      "id": "values",
+      "name": "Mes valeurs",
+      "icon": "💎",
+      "description": "Ce qui vous anime vraiment",
+      "color": "#f59e0b",
+      "steps": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
+    },
+    {
+      "id": "experiences",
+      "name": "Mes expériences",
+      "icon": "🎯",
+      "description": "Les leçons de mon parcours",
+      "color": "#10b981",
+      "steps": [56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
+    },
+    {
+      "id": "personality",
+      "name": "Ma personnalité",
+      "icon": "🧠",
+      "description": "Comment je fonctionne",
+      "color": "#8b5cf6",
+      "steps": [76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90]
+    },
+    {
+      "id": "exploration",
+      "name": "Explorer l'avenir",
+      "icon": "🚀",
+      "description": "Vers quelle direction ?",
+      "color": "#06b6d4",
+      "steps": [91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+    }
+  ],
+  "onboarding": [
+    {
+      "id": "name",
+      "question": "Quel est votre prénom ?",
+      "type": "text",
+      "placeholder": "Ex: Marie"
+    },
+    {
+      "id": "age_range",
+      "question": "Quelle est votre tranche d'âge ?",
+      "type": "select",
+      "options": ["18-25 ans", "26-35 ans", "36-45 ans", "46-55 ans", "56+ ans"]
+    },
+    {
+      "id": "situation",
+      "question": "Quelle est votre situation actuelle ?",
+      "type": "buttons",
+      "options": ["Salarié·e", "Cadre", "Demandeur d'emploi", "Entrepreneur", "En études"]
+    },
+    {
+      "id": "sector",
+      "question": "Quel secteur d'activité ?",
+      "type": "text",
+      "placeholder": "Ex: Informatique, Vente, Santé..."
+    },
+    {
+      "id": "years_experience",
+      "question": "Combien d'années d'expérience ?",
+      "type": "select",
+      "options": ["Moins de 2 ans", "2-5 ans", "5-10 ans", "10-15 ans", "15+ ans"]
+    },
+    {
+      "id": "motivation",
+      "question": "Qu'est-ce qui vous motive à explorer une reconversion ?",
+      "type": "textarea",
+      "placeholder": "Parlez-nous de ce qui vous pousse..."
+    },
+    {
+      "id": "constraints",
+      "question": "Quelles sont vos contraintes principales ?",
+      "type": "buttons",
+      "multiple": true,
+      "options": ["Géographiques", "Familiales", "Financières", "Santé", "Aucune"]
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "module": "profiling",
+      "title": "Votre première impression",
+      "type": "reflection",
+      "content": "Imaginez-vous dans 5 ans, dans un emploi qui vous rend vraiment heureux. Que faites-vous ? Comment est votre environnement ?",
+      "instruction": "Écrivez une courte description (2-3 phrases) de cette vision",
+      "tag": "vision"
+    },
+    {
+      "id": 2,
+      "module": "profiling",
+      "title": "Les moments de flux",
+      "type": "quiz",
+      "content": "Quand perdez-vous le sens du temps au travail ?",
+      "options": [
+        { "text": "En résolvant des problèmes complexes", "score": {"analytical": 5} },
+        { "text": "En aidant ou accompagnant quelqu'un", "score": {"empathy": 5} },
+        { "text": "En créant ou innovant", "score": {"creativity": 5} },
+        { "text": "En organisant et structurant", "score": {"organization": 5} }
+      ],
+      "tag": "flow"
+    },
+    {
+      "id": 3,
+      "module": "profiling",
+      "title": "Vos énergies naturelles",
+      "type": "slider",
+      "content": "Êtes-vous plutôt énergisé par les interactions avec les gens ou préférez-vous travailler en autonomie ?",
+      "scale": ["Très social", "Équilibré", "Très autonome"],
+      "tag": "social_energy"
+    },
+    {
+      "id": 4,
+      "module": "profiling",
+      "title": "L'école que vous aviez",
+      "type": "reflection",
+      "content": "Quel était votre environnement scolaire idéal ? Qu'est-ce qui vous rendait fier de vous ?",
+      "instruction": "Décrivez 2-3 éléments clés",
+      "tag": "school_memories"
+    },
+    {
+      "id": 5,
+      "module": "profiling",
+      "title": "Vos points forts évidents",
+      "type": "checklist",
+      "content": "Sélectionnez les 5 qualités qu'on vous reconnaît le plus souvent :",
+      "options": ["Persévérance", "Créativité", "Leadership", "Écoute", "Rigueur", "Adaptabilité", "Charisme", "Sens de l'humour", "Honnêteté", "Stratégie"],
+      "tag": "strengths"
+    },
+    {
+      "id": 6,
+      "module": "profiling",
+      "title": "Ce qui vous frustre au travail",
+      "type": "quiz",
+      "content": "Qu'est-ce qui vous frustre le plus dans votre environnement professionnel actuel ?",
+      "options": [
+        { "text": "Manque d'autonomie", "score": {"autonomy_need": 5} },
+        { "text": "Absence de sens ou d'impact", "score": {"purpose_need": 5} },
+        { "text": "Relations difficiles", "score": {"collaboration_need": 5} },
+        { "text": "Stagnation professionnelle", "score": {"growth_need": 5} }
+      ],
+      "tag": "frustrations"
+    },
+    {
+      "id": 7,
+      "module": "profiling",
+      "title": "Votre mode d'apprentissage",
+      "type": "quiz",
+      "content": "Comment apprenez-vous le mieux ?",
+      "options": [
+        { "text": "En lisant et étudiant", "score": {"learning_style": "theoretical"} },
+        { "text": "En pratiquant et expérimentant", "score": {"learning_style": "practical"} },
+        { "text": "En discutant avec d'autres", "score": {"learning_style": "social"} },
+        { "text": "En observant des experts", "score": {"learning_style": "observational"} }
+      ],
+      "tag": "learning"
+    },
+    {
+      "id": 8,
+      "module": "profiling",
+      "title": "Votre rapport au risque",
+      "type": "slider",
+      "content": "Vous êtes quelqu'un qui aime prendre des risques ou préférez la stabilité ?",
+      "scale": ["Très prudent", "Équilibré", "Cherche l'aventure"],
+      "tag": "risk_tolerance"
+    },
+    {
+      "id": 9,
+      "module": "profiling",
+      "title": "Les rôles que vous aimez",
+      "type": "checklist",
+      "content": "Sélectionnez 4 rôles qui vous attirer :",
+      "options": ["Expert/spécialiste", "Chef de projet", "Coach/mentor", "Innovateur", "Exécuteur", "Stratège", "Artiste", "Chercheur", "Entrepreneur", "Facilitateur"],
+      "tag": "roles"
+    },
+    {
+      "id": 10,
+      "module": "profiling",
+      "title": "Ce qui vous rendrait vraiment heureux",
+      "type": "ranking",
+      "content": "Classez par ordre d'importance (1=plus important) :",
+      "options": ["L'impact social", "La reconnaissance", "L'autonomie", "La sécurité financière", "Le bien-être personnel", "La création", "L'apprentissage continu", "La famille"],
+      "tag": "happiness_drivers"
+    },
+    {
+      "id": 11,
+      "module": "profiling",
+      "title": "Vos héros professionnels",
+      "type": "reflection",
+      "content": "Qui admirez-vous professionnellement ? Qu'est-ce qui vous attire chez cette personne ?",
+      "instruction": "Décrivez 1-2 personnes et leurs qualités",
+      "tag": "role_models"
+    },
+    {
+      "id": 12,
+      "module": "profiling",
+      "title": "Les succès dont vous êtes fier",
+      "type": "reflection",
+      "content": "Décrivez un moment où vous vous êtes vraiment senti·e capable et valorisé·e",
+      "instruction": "Qu'avez-vous fait ? Comment vous vous sentiez ?",
+      "tag": "pride_moments"
+    },
+    {
+      "id": 13,
+      "module": "profiling",
+      "title": "Votre environnement de travail idéal",
+      "type": "quiz",
+      "content": "Quel environnement vous inspire le plus ?",
+      "options": [
+        { "text": "Bureau moderne et collaboratif", "score": {"environment": "collaborative"} },
+        { "text": "Télétravail ou bureau tranquille", "score": {"environment": "solitary"} },
+        { "text": "Terrain, mobilité, variété", "score": {"environment": "mobile"} },
+        { "text": "Créatif, décalé, innovant", "score": {"environment": "creative"} }
+      ],
+      "tag": "environment"
+    },
+    {
+      "id": 14,
+      "module": "profiling",
+      "title": "Votre relation à l'argent",
+      "type": "slider",
+      "content": "L'argent est-il votre priorité principale ou plutôt un élément secondaire ?",
+      "scale": ["Très important", "Équilibré", "Pas la priorité"],
+      "tag": "financial_priority"
+    },
+    {
+      "id": 15,
+      "module": "profiling",
+      "title": "Les valeurs au cœur de vous",
+      "type": "checklist",
+      "content": "Sélectionnez les 5 valeurs les plus importantes pour vous :",
+      "options": ["Intégrité", "Liberté", "Sécurité", "Justice sociale", "Famille", "Créativité", "Excellence", "Authenticité", "Générosité", "Ambition"],
+      "tag": "core_values"
+    },
+    {
+      "id": 16,
+      "module": "competencies",
+      "title": "Cartographie de vos compétences",
+      "type": "reflection",
+      "content": "Listez 10 choses que vous savez faire vraiment bien",
+      "instruction": "Du plus technique au plus humain, tout compte !",
+      "tag": "skills_inventory"
+    },
+    {
+      "id": 17,
+      "module": "competencies",
+      "title": "Les compétences qui vous manquent",
+      "type": "quiz",
+      "content": "Quelle compétence aimeriez-vous développer ?",
+      "options": [
+        { "text": "Leadership et gestion de projet", "score": {"skill_gap": "leadership"} },
+        { "text": "Compétences techniques/digitales", "score": {"skill_gap": "technical"} },
+        { "text": "Communication et présentation", "score": {"skill_gap": "communication"} },
+        { "text": "Gestion financière ou commerciale", "score": {"skill_gap": "business"} }
+      ],
+      "tag": "skill_gaps"
+    },
+    {
+      "id": 18,
+      "module": "competencies",
+      "title": "Les certifications que vous avez",
+      "type": "reflection",
+      "content": "Énumérez tous vos diplômes, certifications et formations",
+      "instruction": "Y compris les formations en ligne !",
+      "tag": "certifications"
+    },
+    {
+      "id": 19,
+      "module": "competencies",
+      "title": "Compétences cachées",
+      "type": "checklist",
+      "content": "Cochez les compétences que vous ne valorisez pas assez :",
+      "options": ["Résolution de problèmes", "Gestion du stress", "Négociation", "Écoute active", "Vision stratégique", "Adaptabilité", "Travail en équipe", "Gestion du temps", "Création de contenu", "Mentorat"],
+      "tag": "hidden_skills"
+    },
+    {
+      "id": 20,
+      "module": "competencies",
+      "title": "Qu'en disent les autres",
+      "type": "reflection",
+      "content": "Que demandent aux gens quand ils ont besoin de vous dans votre entreprise/réseau ?",
+      "instruction": "Observez quelles compétences sont les plus demandées",
+      "tag": "peer_feedback"
+    },
+    {
+      "id": 21,
+      "module": "competencies",
+      "title": "Vos passions en tant que compétences",
+      "type": "reflection",
+      "content": "Y a-t-il des passions (hobbies, bénévolat) qui pourraient devenir des compétences professionnelles ?",
+      "instruction": "Comment pourriez-vous les monétiser ou les valoriser ?",
+      "tag": "passion_skills"
+    },
+    {
+      "id": 22,
+      "module": "competencies",
+      "title": "L'effet Dunning-Kruger",
+      "type": "quiz",
+      "content": "Comment jugez-vous généralement votre niveau de compétence ?",
+      "options": [
+        { "text": "Je doute souvent de moi, même quand j'excelle", "score": {"confidence": "low"} },
+        { "text": "J'ai une bonne confiance en moi", "score": {"confidence": "medium"} },
+        { "text": "Je suis très confiant dans mes capacités", "score": {"confidence": "high"} }
+      ],
+      "tag": "confidence"
+    },
+    {
+      "id": 23,
+      "module": "competencies",
+      "title": "Vos projets réussis",
+      "type": "ranking",
+      "content": "Classez vos 3 plus grands accomplissements professionnels",
+      "options": [],
+      "instruction": "Décrivez brièvement ce qui les a rendus remarquables",
+      "tag": "achievements"
+    },
+    {
+      "id": 24,
+      "module": "competencies",
+      "title": "Ce que vous maîtrisez vs apprenez",
+      "type": "slider",
+      "content": "Estimez votre niveau d'expertise actuel",
+      "scale": ["Débutant", "Intermédiaire", "Avancé", "Expert"],
+      "tag": "expertise_level"
+    },
+    {
+      "id": 25,
+      "module": "competencies",
+      "title": "Compétences pour demain",
+      "type": "reflection",
+      "content": "Quelles compétences pensez-vous seront essentielles dans 5-10 ans ?",
+      "instruction": "Êtes-vous prêt·e à les développer ?",
+      "tag": "future_skills"
+    },
+    {
+      "id": 26,
+      "module": "competencies",
+      "title": "Votre empreinte professionnelle",
+      "type": "reflection",
+      "content": "Si quelqu'un cherche une personne pour faire quelque chose d'important, pensez-vous qu'on pense à vous ?",
+      "instruction": "Dans quel domaine ?",
+      "tag": "professional_brand"
+    },
+    {
+      "id": 27,
+      "module": "competencies",
+      "title": "Transférabilité de vos skills",
+      "type": "quiz",
+      "content": "Avez-vous des compétences qui pourraient s'appliquer à un secteur complètement différent ?",
+      "options": [
+        { "text": "Oui, beaucoup", "score": {"transferability": "high"} },
+        { "text": "Quelques-unes", "score": {"transferability": "medium"} },
+        { "text": "Non, très spécialisé", "score": {"transferability": "low"} }
+      ],
+      "tag": "transferability"
+    },
+    {
+      "id": 28,
+      "module": "competencies",
+      "title": "Les hard skills vs soft skills",
+      "type": "checklist",
+      "content": "Où êtes-vous particulièrement fort·e ?",
+      "options": ["Technique/IT", "Gestion/Finance", "Communication", "Leadership", "Créativité", "Analyse", "Vente", "RH", "Logistique", "Marketing"],
+      "tag": "skill_categories"
+    },
+    {
+      "id": 29,
+      "module": "competencies",
+      "title": "Ce qui vous limite",
+      "type": "reflection",
+      "content": "Existe-t-il des compétences ou des peurs qui vous bloquent ?",
+      "instruction": "Que faudrait-il pour les surmonter ?",
+      "tag": "blockers"
+    },
+    {
+      "id": 30,
+      "module": "competencies",
+      "title": "Portfolio de compétences",
+      "type": "quiz",
+      "content": "Seriez-vous capable de créer un portfolio ou un CV visual de vos compétences ?",
+      "options": [
+        { "text": "Oui, facilement", "score": {"self_awareness": "high"} },
+        { "text": "Avec de l'aide", "score": {"self_awareness": "medium"} },
+        { "text": "J'aurais du mal", "score": {"self_awareness": "low"} }
+      ],
+      "tag": "self_awareness"
+    },
+    {
+      "id": 31,
+      "module": "competencies",
+      "title": "Apprendre à apprendre",
+      "type": "reflection",
+      "content": "Comment avez-vous acquis vos meilleures compétences ?",
+      "instruction": "Quel était votre approche d'apprentissage ?",
+      "tag": "learning_path"
+    },
+    {
+      "id": 32,
+      "module": "competencies",
+      "title": "Mentor et coaching",
+      "type": "quiz",
+      "content": "Avez-vous un mentor qui pourrait valider votre bilan de compétences ?",
+      "options": [
+        { "text": "Oui, plusieurs", "score": {"network_strength": "strong"} },
+        { "text": "Une ou deux personnes", "score": {"network_strength": "medium"} },
+        { "text": "Pas vraiment", "score": {"network_strength": "weak"} }
+      ],
+      "tag": "network"
+    },
+    {
+      "id": 33,
+      "module": "competencies",
+      "title": "Les défis que vous avez relevés",
+      "type": "reflection",
+      "content": "Quel est le plus grand défi professionnel que vous avez surmontés ?",
+      "instruction": "Que vous a-t-il appris sur vous-même ?",
+      "tag": "resilience"
+    },
+    {
+      "id": 34,
+      "module": "competencies",
+      "title": "Votre trajectoire de croissance",
+      "type": "slider",
+      "content": "Avez-vous senti une progression claire dans votre carrière ?",
+      "scale": ["Stagnation", "Croissance légère", "Évolution claire", "Trajectoire remarquable"],
+      "tag": "career_trajectory"
+    },
+    {
+      "id": 35,
+      "module": "competencies",
+      "title": "Compétences pour votre nouvelle vie",
+      "type": "reflection",
+      "content": "Quelles compétences actuelles voulez-vous absolument garder dans votre nouvelle carrière ?",
+      "instruction": "Lesquelles aimeriez-vous laisser de côté ?",
+      "tag": "skill_preferences"
+    },
+    {
+      "id": 36,
+      "module": "values",
+      "title": "Vos valeurs non-négociables",
+      "type": "ranking",
+      "content": "Classez les valeurs les plus importantes pour vous :",
+      "options": ["Autonomie", "Sécurité", "Reconnaissance", "Impact social", "Créativité", "Équilibre vie-travail", "Apprentissage", "Stabilité", "Innovation", "Compassion"],
+      "tag": "core_values_ranked"
+    },
+    {
+      "id": 37,
+      "module": "values",
+      "title": "L'impact que vous voulez avoir",
+      "type": "reflection",
+      "content": "Quel impact aimeriez-vous avoir sur le monde ?",
+      "instruction": "Comment cela se reflète dans votre travail ?",
+      "tag": "desired_impact"
+    },
+    {
+      "id": 38,
+      "module": "values",
+      "title": "Votre éthique personnelle",
+      "type": "quiz",
+      "content": "Avez-vous déjà refusé une opportunité pour des raisons éthiques ?",
+      "options": [
+        { "text": "Oui, absolument", "score": {"ethics_priority": "high"} },
+        { "text": "Peut-être, dans certains cas", "score": {"ethics_priority": "medium"} },
+        { "text": "Rarement", "score": {"ethics_priority": "low"} }
+      ],
+      "tag": "ethics"
+    },
+    {
+      "id": 39,
+      "module": "values",
+      "title": "Contribution et générosité",
+      "type": "reflection",
+      "content": "Vers quoi vous sentiriez-vous envie de contribuer bénévolement ?",
+      "instruction": "Qu'est-ce que cela dit de vos valeurs ?",
+      "tag": "contribution"
+    },
+    {
+      "id": 40,
+      "module": "values",
+      "title": "Votre legacy",
+      "type": "reflection",
+      "content": "Comment aimeriez-vous être remémbrés professionnellement ?",
+      "instruction": "Quelle trace voulez-vous laisser ?",
+      "tag": "legacy"
+    },
+    {
+      "id": 41,
+      "module": "values",
+      "title": "Les causes qui vous animent",
+      "type": "checklist",
+      "content": "Quelles causes vous touchent vraiment ?",
+      "options": ["Environnement", "Justice sociale", "Santé", "Éducation", "Pauvreté", "Égalité", "Technologie", "Arts et culture", "Développement personnel", "Autre"],
+      "tag": "causes"
+    },
+    {
+      "id": 42,
+      "module": "values",
+      "title": "Votre équilibre idéal",
+      "type": "slider",
+      "content": "Quel équilibre travail-vie personnelle cherchez-vous ?",
+      "scale": ["Vie professionnelle prioritaire", "Équilibré", "Vie personnelle prioritaire"],
+      "tag": "work_life_balance"
+    },
+    {
+      "id": 43,
+      "module": "values",
+      "title": "Les moments de fierté",
+      "type": "reflection",
+      "content": "Décrivez un moment où vous vous sentiez totalement aligné avec vos valeurs",
+      "instruction": "Comment étiez-vous ? Qu'aviez-vous accompli ?",
+      "tag": "alignment_moments"
+    },
+    {
+      "id": 44,
+      "module": "values",
+      "title": "Vos héros de vie",
+      "type": "reflection",
+      "content": "Qui admirez-vous vraiment ? Pourquoi ?",
+      "instruction": "Qu'est-ce que cela dit de vos valeurs ?",
+      "tag": "life_heroes"
+    },
+    {
+      "id": 45,
+      "module": "values",
+      "title": "L'argent et le sens",
+      "type": "quiz",
+      "content": "Pour vous, gagner beaucoup d'argent en faisant quelque chose sans sens, c'est acceptable ?",
+      "options": [
+        { "text": "Non, jamais", "score": {"values_priority": "very_high"} },
+        { "text": "À titre temporaire", "score": {"values_priority": "medium"} },
+        { "text": "Oui, pourquoi pas ?", "score": {"values_priority": "low"} }
+      ],
+      "tag": "money_vs_meaning"
+    },
+    {
+      "id": 46,
+      "module": "values",
+      "title": "Les libertés essentielles",
+      "type": "checklist",
+      "content": "Quelles libertés sont essentielles pour vous ?",
+      "options": ["Liberté de pensée", "Liberté de décision", "Liberté d'horaires", "Liberté de localisation", "Liberté créative", "Liberté d'expression", "Liberté d'apprentissage", "Liberté financière"],
+      "tag": "freedoms"
+    },
+    {
+      "id": 47,
+      "module": "values",
+      "title": "Contribution à l'équipe",
+      "type": "reflection",
+      "content": "Comment contribuez-vous au-delà de votre rôle officiel ?",
+      "instruction": "Qu'apportez-vous aux autres ?",
+      "tag": "team_contribution"
+    },
+    {
+      "id": 48,
+      "module": "values",
+      "title": "Vos principes non-négociables",
+      "type": "reflection",
+      "content": "Énumérez 3 principes sur lesquels vous ne transigeriez jamais",
+      "instruction": "Peu importe le prix ou les conséquences",
+      "tag": "principles"
+    },
+    {
+      "id": 49,
+      "module": "values",
+      "title": "La version future de vous",
+      "type": "reflection",
+      "content": "Imaginez-vous à la retraite, satisfait de votre vie. Pourquoi ?",
+      "instruction": "Quel a été le sens de votre travail ?",
+      "tag": "life_fulfillment"
+    },
+    {
+      "id": 50,
+      "module": "values",
+      "title": "Alignement actuels",
+      "type": "quiz",
+      "content": "Êtes-vous actuellement aligné avec vos vraies valeurs ?",
+      "options": [
+        { "text": "Complètement", "score": {"current_alignment": "high"} },
+        { "text": "Partiellement", "score": {"current_alignment": "medium"} },
+        { "text": "Pas du tout", "score": {"current_alignment": "low"} }
+      ],
+      "tag": "current_alignment"
+    },
+    {
+      "id": 51,
+      "module": "values",
+      "title": "Les valeurs à explorer",
+      "type": "reflection",
+      "content": "Y a-t-il une valeur que vous aimeriez développer ou explorer ?",
+      "instruction": "Laquelle et pourquoi ?",
+      "tag": "values_to_develop"
+    },
+    {
+      "id": 52,
+      "module": "values",
+      "title": "Votre définition du succès",
+      "type": "reflection",
+      "content": "Qu'est-ce que le succès signifie réellement pour vous ?",
+      "instruction": "Ce n'est pas la définition traditionnelle, c'est la vôtre",
+      "tag": "personal_success"
+    },
+    {
+      "id": 53,
+      "module": "values",
+      "title": "L'inspiration au quotidien",
+      "type": "reflection",
+      "content": "Qu'est-ce qui vous inspire le plus ?",
+      "instruction": "Une personne, une cause, une idée ?",
+      "tag": "inspiration"
+    },
+    {
+      "id": 54,
+      "module": "values",
+      "title": "Les peurs liées aux valeurs",
+      "type": "reflection",
+      "content": "Avez-vous des peurs concernant le respect de vos valeurs dans votre carrière ?",
+      "instruction": "Lesquelles et pourquoi ?",
+      "tag": "values_fears"
+    },
+    {
+      "id": 55,
+      "module": "values",
+      "title": "Intégrité et authenticité",
+      "type": "quiz",
+      "content": "Pouvez-vous être complètement authentique dans votre travail actuel ?",
+      "options": [
+        { "text": "Oui, totalement", "score": {"authenticity": "high"} },
+        { "text": "Généralement", "score": {"authenticity": "medium"} },
+        { "text": "Non, je dois me conformer", "score": {"authenticity": "low"} }
+      ],
+      "tag": "authenticity"
+    },
+    {
+      "id": 56,
+      "module": "experiences",
+      "title": "Votre première vraie victoire",
+      "type": "reflection",
+      "content": "Quel est votre premier succès professionnel mémorable ?",
+      "instruction": "Décrivez le contexte et ce que vous avez ressenti",
+      "tag": "first_victory"
+    },
+    {
+      "id": 57,
+      "module": "experiences",
+      "title": "Les échecs qui ont façonné",
+      "type": "reflection",
+      "content": "Quel échec vous a le plus appris sur vous ?",
+      "instruction": "Comment l'avez-vous transformé ?",
+      "tag": "transformative_failure"
+    },
+    {
+      "id": 58,
+      "module": "experiences",
+      "title": "Votre mentor idéal",
+      "type": "reflection",
+      "content": "Qui vous a le plus aidé dans votre développement ?",
+      "instruction": "Qu'avez-vous appris de cette personne ?",
+      "tag": "mentors"
+    },
+    {
+      "id": 59,
+      "module": "experiences",
+      "title": "Les leçons de vie professionnelle",
+      "type": "checklist",
+      "content": "Sélectionnez les leçons clés de votre parcours :",
+      "options": ["La persévérance paie", "La collaboration est essentielle", "L'adaptabilité est la clé", "L'écoute crée des liens", "L'authenticité gagne", "La curiosité ouvre des portes", "L'échec est une opportunité", "La passion guide"],
+      "tag": "life_lessons"
+    },
+    {
+      "id": 60,
+      "module": "experiences",
+      "title": "Les pivots de votre carrière",
+      "type": "reflection",
+      "content": "Avez-vous fait des changements majeurs ? Pourquoi ?",
+      "instruction": "Étaient-ce des choix ou des circonstances ?",
+      "tag": "career_pivots"
+    },
+    {
+      "id": 61,
+      "module": "experiences",
+      "title": "Les collaborations marquantes",
+      "type": "reflection",
+      "content": "Quelle collaboration a été la plus enrichissante ?",
+      "instruction": "Ce qui rendait cette équipe si spéciale ?",
+      "tag": "collaborations"
+    },
+    {
+      "id": 62,
+      "module": "experiences",
+      "title": "Les défis relevés",
+      "type": "ranking",
+      "content": "Classez vos 3 défis les plus importants",
+      "options": [],
+      "instruction": "Comment les avez-vous gérés ?",
+      "tag": "challenges_overcome"
+    },
+    {
+      "id": 63,
+      "module": "experiences",
+      "title": "Les opportunités manquées",
+      "type": "reflection",
+      "content": "Y a-t-il une opportunité dont vous regrettez de ne pas l'avoir saisie ?",
+      "instruction": "Que pourriez-vous apprendre de cela ?",
+      "tag": "missed_opportunities"
+    },
+    {
+      "id": 64,
+      "module": "experiences",
+      "title": "Les industries ou secteurs explorés",
+      "type": "reflection",
+      "content": "Énumérez tous les secteurs d'activité que vous avez exploré",
+      "instruction": "Qu'avez-vous aimé/détesté dans chacun ?",
+      "tag": "sectors_explored"
+    },
+    {
+      "id": 65,
+      "module": "experiences",
+      "title": "Vos rôles à travers le temps",
+      "type": "reflection",
+      "content": "Décrivez l'évolution de vos rôles",
+      "instruction": "Quel modèle ou progression voyez-vous ?",
+      "tag": "role_evolution"
+    },
+    {
+      "id": 66,
+      "module": "experiences",
+      "title": "Les entreprises qui vous ont marqué",
+      "type": "reflection",
+      "content": "Quelle entreprise ou organisation vous a le plus influencé ?",
+      "instruction": "Pourquoi ? Qu'avez-vous appris ?",
+      "tag": "impactful_companies"
+    },
+    {
+      "id": 67,
+      "module": "experiences",
+      "title": "L'apprentissage en action",
+      "type": "reflection",
+      "content": "Décrivez une compétence que vous avez développé sur le tas",
+      "instruction": "Comment avez-vous appris sans formation formelle ?",
+      "tag": "on_the_job_learning"
+    },
+    {
+      "id": 68,
+      "module": "experiences",
+      "title": "Les périodes creuses",
+      "type": "reflection",
+      "content": "Y a-t-il eu des périodes difficiles ou de transition ?",
+      "instruction": "Comment les avez-vous traversées ? Qu'en avez-vous tiré ?",
+      "tag": "difficult_periods"
+    },
+    {
+      "id": 69,
+      "module": "experiences",
+      "title": "L'impact sur les autres",
+      "type": "reflection",
+      "content": "Comment avez-vous positivement impacté vos collègues ou clients ?",
+      "instruction": "Des histoires concrètes ?",
+      "tag": "impact_on_others"
+    },
+    {
+      "id": 70,
+      "module": "experiences",
+      "title": "Les erreurs mémorables",
+      "type": "reflection",
+      "content": "Quelle erreur vous a le plus marqué ? Qu'en avez-vous appris ?",
+      "instruction": "Comment l'avez-vous transformée en apprentissage ?",
+      "tag": "memorable_mistakes"
+    },
+    {
+      "id": 71,
+      "module": "experiences",
+      "title": "Votre contribution unique",
+      "type": "reflection",
+      "content": "Ce que vous avez uniquement apporté à vos organisations",
+      "instruction": "Votre secret sauce ?",
+      "tag": "unique_contribution"
+    },
+    {
+      "id": 72,
+      "module": "experiences",
+      "title": "L'évolution de vos motivations",
+      "type": "reflection",
+      "content": "Vos motivations ont-elles changé au cours de votre carrière ?",
+      "instruction": "Comment ? Pourquoi ?",
+      "tag": "motivation_evolution"
+    },
+    {
+      "id": 73,
+      "module": "experiences",
+      "title": "Les cercles d'influence",
+      "type": "reflection",
+      "content": "Qui vous a inspiré ou influencé positivement ?",
+      "instruction": "Ces personnes sont votre réseau actuel ?",
+      "tag": "influencers"
+    },
+    {
+      "id": 74,
+      "module": "experiences",
+      "title": "L'expérience formatrice",
+      "type": "reflection",
+      "content": "Y a-t-il une expérience qui a vraiment transformé votre vision du travail ?",
+      "instruction": "Comment ?",
+      "tag": "transformative_experience"
+    },
+    {
+      "id": 75,
+      "module": "experiences",
+      "title": "Votre récit professionnel",
+      "type": "reflection",
+      "content": "Racontez votre histoire professionnelle en quelques paragraphes",
+      "instruction": "Comment cela s'enchaîne ? Quel est le fil conducteur ?",
+      "tag": "professional_narrative"
+    },
+    {
+      "id": 76,
+      "module": "personality",
+      "title": "Votre type de personnalité",
+      "type": "quiz",
+      "content": "Selon vous, quel type de personnalité vous correspond le mieux ?",
+      "options": [
+        { "text": "Penseur analytique", "score": {"personality": "analytical"} },
+        { "text": "Créatif innovant", "score": {"personality": "creative"} },
+        { "text": "Leader charismatique", "score": {"personality": "leader"} },
+        { "text": "Empathique bienveillant", "score": {"personality": "empathetic"} }
+      ],
+      "tag": "personality_type"
+    },
+    {
+      "id": 77,
+      "module": "personality",
+      "title": "Votre style de communication",
+      "type": "slider",
+      "content": "Votre style de communication est-il plutôt direct ou nuancé ?",
+      "scale": ["Très direct", "Équilibré", "Très nuancé"],
+      "tag": "communication_style"
+    },
+    {
+      "id": 78,
+      "module": "personality",
+      "title": "Énergie et introversion",
+      "type": "slider",
+      "content": "Êtes-vous énergisé par les gens ou avez-vous besoin de solitude ?",
+      "scale": ["Très extraverti", "Ambiverti", "Très introverti"],
+      "tag": "introversion_extroversion"
+    },
+    {
+      "id": 79,
+      "module": "personality",
+      "title": "Votre sens de l'humour",
+      "type": "reflection",
+      "content": "Comment décriveriez-vous votre sens de l'humour ?",
+      "instruction": "Comment cela influence votre travail ?",
+      "tag": "humor"
+    },
+    {
+      "id": 80,
+      "module": "personality",
+      "title": "Votre résilience",
+      "type": "slider",
+      "content": "Face aux difficultés, vous êtes plutôt du genre à plier ou à casser ?",
+      "scale": ["Je plisse", "Je m'adapte", "Je rebondis rapidement"],
+      "tag": "resilience"
+    },
+    {
+      "id": 81,
+      "module": "personality",
+      "title": "Optimisme vs réalisme",
+      "type": "quiz",
+      "content": "Comment vous décririez-vous ?",
+      "options": [
+        { "text": "Optimiste naturel", "score": {"outlook": "optimistic"} },
+        { "text": "Réaliste pragmatique", "score": {"outlook": "realistic"} },
+        { "text": "Prudent par nature", "score": {"outlook": "cautious"} }
+      ],
+      "tag": "outlook"
+    },
+    {
+      "id": 82,
+      "module": "personality",
+      "title": "Votre rapport aux conflits",
+      "type": "quiz",
+      "content": "Comment gérez-vous les conflits ?",
+      "options": [
+        { "text": "Je les affronte directement", "score": {"conflict_style": "confrontational"} },
+        { "text": "Je cherche à concilier", "score": {"conflict_style": "collaborative"} },
+        { "text": "Je préfère les éviter", "score": {"conflict_style": "avoidant"} }
+      ],
+      "tag": "conflict_style"
+    },
+    {
+      "id": 83,
+      "module": "personality",
+      "title": "Votre relation au changement",
+      "type": "slider",
+      "content": "Êtes-vous un amateur de changement ou un ami de la stabilité ?",
+      "scale": ["Adore le changement", "Adaptatif", "Préfère la stabilité"],
+      "tag": "change_preference"
+    },
+    {
+      "id": 84,
+      "module": "personality",
+      "title": "L'organisation personnelle",
+      "type": "quiz",
+      "content": "Comment décriveriez-vous votre organisation personnelle ?",
+      "options": [
+        { "text": "Très structuré et planifié", "score": {"organization": "high"} },
+        { "text": "Flexible et adaptable", "score": {"organization": "medium"} },
+        { "text": "Plutôt chaotique créatif", "score": {"organization": "low"} }
+      ],
+      "tag": "personal_organization"
+    },
+    {
+      "id": 85,
+      "module": "personality",
+      "title": "Votre sensibilité émotionnelle",
+      "type": "slider",
+      "content": "Êtes-vous plutôt émotionnellement sensible ou détaché ?",
+      "scale": ["Très sensible", "Équilibré", "Plutôt stoïque"],
+      "tag": "emotional_sensitivity"
+    },
+    {
+      "id": 86,
+      "module": "personality",
+      "title": "L'ambition et la satisfaction",
+      "type": "quiz",
+      "content": "Êtes-vous quelqu'un d'ambitieux ?",
+      "options": [
+        { "text": "Très ambitieux, toujours en avant", "score": {"ambition": "high"} },
+        { "text": "Modérément, je me fixe des objectifs", "score": {"ambition": "medium"} },
+        { "text": "Je ne suis pas très ambitieux", "score": {"ambition": "low"} }
+      ],
+      "tag": "ambition"
+    },
+    {
+      "id": 87,
+      "module": "personality",
+      "title": "Votre curiosité naturelle",
+      "type": "slider",
+      "content": "Êtes-vous naturellement curieux et exploratif ?",
+      "scale": ["Pas très curieux", "Curieux normal", "Très curieux"],
+      "tag": "curiosity"
+    },
+    {
+      "id": 88,
+      "module": "personality",
+      "title": "L'autonomie vs collaboration",
+      "type": "slider",
+      "content": "Préférez-vous travailler en solo ou en équipe ?",
+      "scale": ["Solo absolument", "Équilibré", "Équipe toujours"],
+      "tag": "autonomy_preference"
+    },
+    {
+      "id": 89,
+      "module": "personality",
+      "title": "Votre seuil de frustration",
+      "type": "slider",
+      "content": "Êtes-vous patient ou facilement frustré ?",
+      "scale": ["Très patient", "Normal", "Facilement frustré"],
+      "tag": "patience"
+    },
+    {
+      "id": 90,
+      "module": "personality",
+      "title": "L'héritage de votre tempérament",
+      "type": "reflection",
+      "content": "Comment votre tempérament naturel influence votre carrière ?",
+      "instruction": "Quels sont vos superpouces ? Vos défis ?",
+      "tag": "temperament_impact"
+    },
+    {
+      "id": 91,
+      "module": "exploration",
+      "title": "Les pistes qui vous intriguent",
+      "type": "reflection",
+      "content": "Quels types de travail ou d'environnements vous intriguent ?",
+      "instruction": "Qu'est-ce qui vous attire ? Pourquoi ?",
+      "tag": "intriguing_paths"
+    },
+    {
+      "id": 92,
+      "module": "exploration",
+      "title": "Votre rêve professionnel",
+      "type": "reflection",
+      "content": "Si vous aviez une baguette magique, quel serait votre emploi idéal ?",
+      "instruction": "Ne vous limitez pas par la réalité maintenant",
+      "tag": "ideal_job"
+    },
+    {
+      "id": 93,
+      "module": "exploration",
+      "title": "Les obstacles perçus",
+      "type": "reflection",
+      "content": "Quels sont les obstacles majeurs à votre reconversion ?",
+      "instruction": "Comment pourriez-vous les surmonter ?",
+      "tag": "obstacles"
+    },
+    {
+      "id": 94,
+      "module": "exploration",
+      "title": "Votre timeline réaliste",
+      "type": "slider",
+      "content": "Dans combien de temps aimeriez-vous faire cette transition ?",
+      "scale": ["Immédiat (0-3 mois)", "Court terme (3-12 mois)", "Moyen terme (1-3 ans)", "Long terme (3+ ans)"],
+      "tag": "transition_timeline"
+    },
+    {
+      "id": 95,
+      "module": "exploration",
+      "title": "Votre niveau de préparation",
+      "type": "quiz",
+      "content": "Vous sentez-vous prêt pour cette transition ?",
+      "options": [
+        { "text": "Tout à fait, j'ai un plan", "score": {"readiness": "high"} },
+        { "text": "Partiellement, j'explore", "score": {"readiness": "medium"} },
+        { "text": "Non, j'en suis au début", "score": {"readiness": "low"} }
+      ],
+      "tag": "readiness"
+    },
+    {
+      "id": 96,
+      "module": "exploration",
+      "title": "Vos ressources disponibles",
+      "type": "checklist",
+      "content": "Cochez les ressources dont vous disposez :",
+      "options": ["Argent pour une formation", "Temps pour apprendre", "Mentor/coach", "Réseau professionnel", "Famille supportive", "Flexibilité de localisation", "Diplômes existants", "Expérience pertinente"],
+      "tag": "available_resources"
+    },
+    {
+      "id": 97,
+      "module": "exploration",
+      "title": "Les petits pas concrets",
+      "type": "reflection",
+      "content": "Quel est le petit pas que vous pourriez faire dès cette semaine ?",
+      "instruction": "Soyez spécifique et réaliste",
+      "tag": "first_step"
+    },
+    {
+      "id": 98,
+      "module": "exploration",
+      "title": "Vos besoins de soutien",
+      "type": "checklist",
+      "content": "De quel soutien avez-vous besoin ?",
+      "options": ["Coaching professionnel", "Formation", "Validation par les pairs", "Financement", "Espace créatif", "Mentorship", "Communauté", "Ressources techniques"],
+      "tag": "support_needs"
+    },
+    {
+      "id": 99,
+      "module": "exploration",
+      "title": "Votre motivation profonde",
+      "type": "reflection",
+      "content": "Pourquoi cette reconversion est-elle importante pour vous ? Qui serez-vous après ?",
+      "instruction": "Cette question est clé pour votre motivation à long terme",
+      "tag": "deep_motivation"
+    },
+    {
+      "id": 100,
+      "module": "exploration",
+      "title": "Votre engagement envers vous-même",
+      "type": "reflection",
+      "content": "Qu'allez-vous promettre à la personne que vous découvrez être ?",
+      "instruction": "Écrivez votre manifeste personnel",
+      "tag": "personal_commitment"
+    }
+  ],
+  "recommendations": [
+    {
+      "id": 1,
+      "title": "Coach en Développement Personnel",
+      "description": "Accompagner les autres dans leur transformation et croissance personnelle",
+      "compatibility": 85,
+      "skills_match": ["Écoute", "Leadership", "Communication", "Empathie"],
+      "values_match": ["Impact social", "Apprentissage", "Autonomie"],
+      "avg_salary": "40-70k€",
+      "growth_potential": "Élevé",
+      "action_items": [
+        "Certifier vous-même en coaching (ICF, 6-12 mois)",
+        "Rejoindre une communauté de coaches",
+        "Commencer avec des amis ou famille",
+        "Développer une spécialité"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Responsable Innovation",
+      "description": "Piloter la transformation et l'innovation au sein d'une organisation",
+      "compatibility": 78,
+      "skills_match": ["Stratégie", "Leadership", "Créativité", "Gestion de projet"],
+      "values_match": ["Créativité", "Impact", "Autonomie"],
+      "avg_salary": "45-75k€",
+      "growth_potential": "Très élevé",
+      "action_items": [
+        "Suivre un master en innovation",
+        "Rejoindre un poste intermédiaire en innovation",
+        "Construire un portfolio de projets innovants",
+        "Réseau avec les innovateurs"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Consultant en Stratégie RH",
+      "description": "Aider les organisations à transformer leur culture et leurs talents",
+      "compatibility": 72,
+      "skills_match": ["Analyse", "Communication", "Stratégie", "Leadership"],
+      "values_match": ["Impact social", "Collaboration", "Apprentissage"],
+      "avg_salary": "50-80k€",
+      "growth_potential": "Élevé",
+      "action_items": [
+        "Certification en consulting (optionnel)",
+        "Expérience en cabinet ou interne",
+        "Master spécialisé recommandé",
+        "Portfolio de cas clients"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Entrepreneur en Impact",
+      "description": "Créer une entreprise alignée avec vos valeurs et générant un impact positif",
+      "compatibility": 68,
+      "skills_match": ["Créativité", "Leadership", "Vision", "Résilience"],
+      "values_match": ["Autonomie", "Impact social", "Créativité"],
+      "avg_salary": "Variable",
+      "growth_potential": "Très élevé (volatilité)",
+      "action_items": [
+        "Clarifier votre modèle économique",
+        "Valider l'idée avec des clients",
+        "Rejoindre un accélérateur",
+        "Construire votre MVP"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Formateur/Créateur de Contenu",
+      "description": "Partager votre expertise et inspirer par l'enseignement et le contenu",
+      "compatibility": 65,
+      "skills_match": ["Communication", "Pédagogie", "Créativité", "Storytelling"],
+      "values_match": ["Impact social", "Liberté", "Apprentissage"],
+      "avg_salary": "30-60k€",
+      "growth_potential": "Élevé",
+      "action_items": [
+        "Créer votre première formation/contenu",
+        "Choisir votre plateforme (YouTube, Udemy, etc.)",
+        "Construire votre audience",
+        "Monetiser progressivement"
+      ]
+    }
+  ],
+  "challenges": [
+    "Décrivez un succès récent - aussi petit soit-il",
+    "Identifiez une compétence que vous sousestimez",
+    "Listez 3 personnes qui croient en vous",
+    "Écrivez une phrase positive sur vous-même",
+    "Identifiez une valeur que vous pouvez vivre cette semaine",
+    "Décrivez comment vous aidez les autres",
+    "Nommez une peur et une première action pour la surmonter",
+    "Partagez ce qui vous rend unique",
+    "Décrivez le meilleur feedback que vous ayez reçu",
+    "Planifiez une action vers votre rêve"
+  ]
+}
