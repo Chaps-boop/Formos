@@ -192,6 +192,60 @@ app.renderJourneyScreen = function() {
   showScreen('journey-screen');
 };
 
+app.getModuleIllustration = function(moduleId) {
+  const illustrations = {
+    'profiling': `<svg class="module-illustration" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="75" cy="35" r="20" fill="#2c5282" opacity="0.8"/>
+      <ellipse cx="75" cy="70" rx="18" ry="25" fill="#2c5282" opacity="0.7"/>
+      <path d="M 57 60 L 50 80" stroke="#2c5282" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+      <path d="M 93 60 L 100 80" stroke="#2c5282" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+      <circle cx="30" cy="20" r="6" fill="#c9934f" opacity="0.6"/>
+      <circle cx="120" cy="40" r="5" fill="#c9934f" opacity="0.5"/>
+      <circle cx="25" cy="100" r="4" fill="#1e5631" opacity="0.5"/>
+    </svg>`,
+    'competencies': `<svg class="module-illustration" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="75" cy="40" r="18" fill="#1e5631" opacity="0.8"/>
+      <circle cx="50" cy="70" r="14" fill="#2c5282" opacity="0.7"/>
+      <circle cx="100" cy="70" r="14" fill="#2c5282" opacity="0.7"/>
+      <circle cx="75" cy="95" r="12" fill="#c9934f" opacity="0.7"/>
+      <line x1="75" y1="58" x2="50" y2="70" stroke="#4a7ba7" stroke-width="2" opacity="0.5"/>
+      <line x1="75" y1="58" x2="100" y2="70" stroke="#4a7ba7" stroke-width="2" opacity="0.5"/>
+      <line x1="75" y1="58" x2="75" y2="95" stroke="#4a7ba7" stroke-width="2" opacity="0.5"/>
+    </svg>`,
+    'values': `<svg class="module-illustration" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 75 20 L 85 40 L 105 40 L 90 50 L 95 70 L 75 60 L 55 70 L 60 50 L 45 40 L 65 40 Z" fill="#c9934f" opacity="0.8"/>
+      <path d="M 50 85 L 56 98 L 68 98 L 58 104 L 62 115 L 50 110 L 38 115 L 42 104 L 32 98 L 44 98 Z" fill="#2c5282" opacity="0.6"/>
+      <path d="M 100 85 L 106 98 L 118 98 L 108 104 L 112 115 L 100 110 L 88 115 L 92 104 L 82 98 L 94 98 Z" fill="#1e5631" opacity="0.6"/>
+    </svg>`,
+    'experiences': `<svg class="module-illustration" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="25" width="40" height="30" fill="#2c5282" opacity="0.7" rx="4"/>
+      <rect x="70" y="35" width="40" height="30" fill="#4a7ba7" opacity="0.7" rx="4"/>
+      <circle cx="40" cy="45" r="6" fill="#c9934f" opacity="0.8"/>
+      <circle cx="90" cy="55" r="6" fill="#c9934f" opacity="0.8"/>
+      <path d="M 60 40 Q 75 30 80 35" stroke="#1e5631" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+      <rect x="45" y="75" width="60" height="3" fill="#1e5631" opacity="0.5"/>
+      <rect x="45" y="85" width="50" height="3" fill="#1e5631" opacity="0.5"/>
+    </svg>`,
+    'personality': `<svg class="module-illustration" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="75" cy="30" r="16" fill="#2c5282" opacity="0.8"/>
+      <path d="M 60 45 Q 75 70 90 45" stroke="#c9934f" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <circle cx="65" cy="40" r="3" fill="#1e5631" opacity="0.7"/>
+      <circle cx="85" cy="40" r="3" fill="#1e5631" opacity="0.7"/>
+      <path d="M 55 80 L 95 80" stroke="#4a7ba7" stroke-width="2.5" opacity="0.6"/>
+      <circle cx="75" cy="95" r="8" fill="#1e5631" opacity="0.5"/>
+    </svg>`,
+    'exploration': `<svg class="module-illustration" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="75" cy="50" r="15" fill="none" stroke="#2c5282" stroke-width="2" opacity="0.8"/>
+      <line x1="75" y1="50" x2="90" y2="50" stroke="#2c5282" stroke-width="2" opacity="0.8"/>
+      <circle cx="90" cy="50" r="3" fill="#c9934f" opacity="0.9"/>
+      <path d="M 75 50 L 65 35 L 85 35" stroke="#1e5631" stroke-width="2" fill="none" opacity="0.7"/>
+      <path d="M 75 50 L 60 70 L 65 75" stroke="#4a7ba7" stroke-width="2" fill="none" opacity="0.7"/>
+      <path d="M 75 50 L 90 70 L 85 75" stroke="#4a7ba7" stroke-width="2" fill="none" opacity="0.7"/>
+    </svg>`
+  };
+  return illustrations[moduleId] || '';
+};
+
 app.renderStep = function() {
   const step = this.data.steps[this.currentStep];
   const module = this.data.modules.find(m => m.id === step.module);
@@ -199,7 +253,10 @@ app.renderStep = function() {
   document.getElementById('step-number').textContent = `Étape ${this.currentStep + 1}`;
   document.getElementById('step-module').textContent = module.name;
 
-  let content = `<h2>${step.title}</h2>`;
+  let content = `<div class="step-header-section">
+    ${this.getModuleIllustration(module.id)}
+    <h2>${step.title}</h2>
+  </div>`;
 
   if (step.type === 'reflection') {
     content += `<div class="question"><p>${step.content}</p></div>`;

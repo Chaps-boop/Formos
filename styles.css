@@ -717,6 +717,32 @@ body {
     pointer-events: none;
 }
 
+.step-header-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 30px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(44, 82, 130, 0.05), rgba(30, 86, 49, 0.05));
+    border-radius: var(--radius-lg);
+}
+
+.step-header-section h2 {
+    margin: 0;
+    flex: 1;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.module-illustration {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(13, 31, 45, 0.1));
+}
+
 .step-header {
     display: flex;
     justify-content: space-between;
