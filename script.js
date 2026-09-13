@@ -433,7 +433,7 @@ app.triggerConfetti = function() {
   canvas.height = window.innerHeight;
 
   const confetti = [];
-  const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#06b6d4'];
+  const colors = ['#1a365d', '#4c7ba7', '#2d8659', '#d4a574', '#b8956f'];
 
   for (let i = 0; i < 100; i++) {
     confetti.push({
@@ -539,38 +539,86 @@ app.renderResults = function() {
 
   // Onglet recommandations enrichies
   let recsHtml = `<div class="recommendations-intro">
-    <h2>🚀 Vos 5 Meilleures Orientations Professionnelles</h2>
-    <p>Basées sur votre profil unique et vos préférences</p>
-  </div>`;
+    <h2>⛰️ Votre Ascension Professionnelle</h2>
+    <p>5 chemins adaptés à votre profil unique - Du premier pas au sommet</p>
+  </div><div class="job-matching-cards">`;
 
   this.data.recommendations.forEach((rec, idx) => {
     const compatibility = 85 - (idx * 5);
-    const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
-    recsHtml += `
-      <div class="recommendation-card recommendation-rank-${idx + 1}">
-        <div class="recommendation-medal">${medals[idx]}</div>
-        <div class="recommendation-content">
-          <h3>${rec.title}</h3>
-          <p class="recommendation-desc">${rec.description}</p>
+    const medals = ['🥇', '🥈', '🥉', '🏔️', '⛰️'];
+    const userSkills = rec.user_skills || [];
 
-          <div class="compatibility-section">
-            <div class="compatibility-label">
-              <span>Compatibilité</span>
-              <span class="compatibility-percent">${compatibility}%</span>
+    recsHtml += `
+      <div class="job-card" style="animation-delay: ${idx * 0.1}s">
+        <div class="job-card-header">
+          <div class="job-card-title">
+            <div class="job-card-icon">${rec.icon}</div>
+            <div>
+              <h2>${rec.title}</h2>
+              <div style="font-size: 14px; margin-top: 4px; opacity: 0.95;">${rec.description}</div>
             </div>
-            <div class="score-bar">
-              <div class="score-fill" style="width: ${compatibility}%"></div>
+          </div>
+          <div class="job-card-meta">
+            <div class="job-meta-item">
+              <div class="job-meta-label">Compatibilité</div>
+              <div class="job-meta-value">${compatibility}%</div>
+            </div>
+            <div class="job-meta-item">
+              <div class="job-meta-label">Salaire annuel</div>
+              <div class="job-meta-value">${rec.avg_salary}</div>
+            </div>
+            <div class="job-meta-item">
+              <div class="job-meta-label">Potentiel</div>
+              <div class="job-meta-value" style="font-size: 14px;">${rec.growth_potential}</div>
+            </div>
+            <div class="job-meta-item">
+              <div class="job-meta-label">Rang</div>
+              <div class="job-meta-value" style="font-size: 24px;">${medals[idx]}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-card-body">
+          <div class="job-why-match">
+            <div class="job-why-match-label">✨ Pourquoi c'est un bon match</div>
+            <div class="job-why-match-text">${rec.why_match}</div>
+          </div>
+
+          <div class="job-skills-section">
+            <div class="job-skills-title">💪 Compétences requises</div>
+            <div class="skills-required">
+              ${rec.required_skills.map((skill, skillIdx) => {
+                const isMatched = userSkills.some(us => us.toLowerCase().includes(skill.name.split(' ')[0].toLowerCase()));
+                return `
+                  <div class="skill-item">
+                    <div class="skill-name-level">
+                      <div class="skill-name">${skill.name}</div>
+                      <div class="skill-level">Niveau: ${skill.level}</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                      <div class="skill-match-indicator">
+                        ${[1, 2, 3].map((level, i) => {
+                          const matched = (i < (skill.level === 'Expert' ? 3 : skill.level === 'Avancé' ? 2 : 1)) ? ' matched' : '';
+                          return `<div class="skill-match-dot${matched}"></div>`;
+                        }).join('')}
+                      </div>
+                      <div class="skill-importance">${skill.importance}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
 
-          <div class="recommendation-meta">
-            <div class="meta-item">
-              <span class="meta-label">💰 Salaire</span>
-              <span class="meta-value">${rec.avg_salary}</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">📈 Demande</span>
-              <span class="meta-value">Élevée</span>
+          <div class="job-challenges">
+            <div class="job-challenges-label">⚠️ Défis à relever</div>
+            <div class="job-challenges-text">${rec.challenges}</div>
+          </div>
+
+          <div class="job-action-plan">
+            <div class="job-action-label">📍 Prochaines étapes</div>
+            <div class="job-action-list">
+              ${rec.action_items.map(item => `<div class="job-action-item">${item}</div>`).join('')}
             </div>
           </div>
         </div>
@@ -578,6 +626,7 @@ app.renderResults = function() {
     `;
   });
 
+  recsHtml += `</div>`;
   document.getElementById('recommendations-list').innerHTML = recsHtml;
 
   // Onglet plan d'action détaillé
