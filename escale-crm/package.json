@@ -1,0 +1,20 @@
+{
+  "name": "escale-crm",
+  "version": "1.0.0",
+  "description": "CRM et suivi de projets — Escale en Presqu’île",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "imapflow": "^2.12.1",
+    "mailparser": "^3.14.5",
+    "node-html-parser": "^9.0.7"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  }
+}

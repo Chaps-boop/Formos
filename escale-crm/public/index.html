@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRM Escale en Presqu'île</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div id="login" class="login" hidden>
+    <form class="login-card" id="login-form">
+      <div class="brand-big">Escale <span>en Presqu'île</span></div>
+      <p class="muted">Suivi des demandes et des projets</p>
+      <label>E-mail<input name="email" type="email" autocomplete="username" required></label>
+      <label>Mot de passe<input name="password" type="password" autocomplete="current-password" required></label>
+      <p class="error" id="login-error"></p>
+      <button class="btn primary" type="submit">Se connecter</button>
+    </form>
+  </div>
+
+  <div id="app" class="layout" hidden>
+    <aside class="sidebar">
+      <div class="brand">Escale <span>en Presqu'île</span></div>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+      <nav id="nav">
+        <a href="#/projets" data-nav="projets">Suivi des projets</a>
+        <a href="#/calendrier" data-nav="calendrier">Calendrier</a>
+        <a href="#/clients" data-nav="clients">Fiches clients</a>
+        <a href="#/repertoire" data-nav="repertoire">Répertoire contacts</a>
+        <a href="#/membres" data-nav="membres">Membres Escale</a>
+        <a href="#/utilisateurs" data-nav="utilisateurs" class="admin-only">Utilisateurs</a>
+        <a href="#/compte" data-nav="compte">Mon compte</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div id="me-name" class="muted"></div>
+        <button class="btn ghost small" id="logout">Se déconnecter</button>
+      </div>
+    </aside>
+    <main id="view" class="main"></main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
